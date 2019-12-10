@@ -2,6 +2,6 @@
 ControlUI\bin\
 ControlUI\bin\Debug
 ControlUI\obj\Debug
-ControlLibrary\bin\Debug
-ControlLibrary\bin\Debug\
+!ControlLibrary\bin\Debug
+ControlLibrary/bin/Debug/*
 ControlLibrary\bin\Debug\obj
