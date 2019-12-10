@@ -8,14 +8,14 @@ namespace ControlLibrary
     public static class GlobalConfig
     {
         /// <summary>
-        /// Set of connections. You can edit this to have another data sources (database)
+        /// Type of connection. You can edit this to another data sources (e.g. database)
         /// </summary>
-        public static List<IDataConnection> Connections { get; private set; } = new List<IDataConnection>();
+        public static IDataConnection Connections { get; private set; }
 
-        public static void InitializeConnections() // You can change this method to set config data source. Just change parameters e.g. bool textFile, bool database.
+        public static void InitializeConnections() // You can change this method to set config data source. 
         {
             TextConnector text = new TextConnector();
-            Connections.Add(text);
+            Connections = text;
         }
     }
 }
