@@ -84,8 +84,8 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PCControlLibrary\ControlLibrary.csproj">
-      <Project>{44996df5-05d0-4901-a61c-65a116637d17}</Project>
+    <ProjectReference Include="..\ControlLibrary\ControlLibrary.csproj">
+      <Project>{f40f74bc-07ba-4acb-adf1-9c07674cbe6d}</Project>
       <Name>ControlLibrary</Name>
     </ProjectReference>
   </ItemGroup>
