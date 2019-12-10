@@ -1,0 +1,12 @@
+C:\Users\onova\source\repos\PCControlApp\ControlUI\bin\Debug\ControlUI.exe.config
+C:\Users\onova\source\repos\PCControlApp\ControlUI\bin\Debug\ControlUI.exe
+C:\Users\onova\source\repos\PCControlApp\ControlUI\bin\Debug\ControlUI.pdb
+C:\Users\onova\source\repos\PCControlApp\ControlUI\obj\Debug\ControlUI.csprojAssemblyReference.cache
+C:\Users\onova\source\repos\PCControlApp\ControlUI\obj\Debug\ControlUI.ComputerViewForm.resources
+C:\Users\onova\source\repos\PCControlApp\ControlUI\obj\Debug\ControlUI.Properties.Resources.resources
+C:\Users\onova\source\repos\PCControlApp\ControlUI\obj\Debug\ControlUI.csproj.GenerateResource.cache
+C:\Users\onova\source\repos\PCControlApp\ControlUI\obj\Debug\ControlUI.exe
+C:\Users\onova\source\repos\PCControlApp\ControlUI\obj\Debug\ControlUI.pdb
+C:\Users\onova\source\repos\PCControlApp\ControlUI\bin\Debug\ControlLibrary.dll
+C:\Users\onova\source\repos\PCControlApp\ControlUI\bin\Debug\ControlLibrary.pdb
+C:\Users\onova\source\repos\PCControlApp\ControlUI\obj\Debug\ControlUI.csproj.CopyComplete

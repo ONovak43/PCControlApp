@@ -1,0 +1,8 @@
+C:\Users\onova\source\repos\PCControlApp\PCControlLibrary\obj\Debug\netstandard2.0\ControlLibrary.csprojAssemblyReference.cache
+C:\Users\onova\source\repos\PCControlApp\PCControlLibrary\obj\Debug\netstandard2.0\ControlLibrary.AssemblyInfoInputs.cache
+C:\Users\onova\source\repos\PCControlApp\PCControlLibrary\obj\Debug\netstandard2.0\ControlLibrary.AssemblyInfo.cs
+C:\Users\onova\source\repos\PCControlApp\PCControlLibrary\bin\Debug\netstandard2.0\ControlLibrary.deps.json
+C:\Users\onova\source\repos\PCControlApp\PCControlLibrary\bin\Debug\netstandard2.0\ControlLibrary.dll
+C:\Users\onova\source\repos\PCControlApp\PCControlLibrary\bin\Debug\netstandard2.0\ControlLibrary.pdb
+C:\Users\onova\source\repos\PCControlApp\PCControlLibrary\obj\Debug\netstandard2.0\ControlLibrary.dll
+C:\Users\onova\source\repos\PCControlApp\PCControlLibrary\obj\Debug\netstandard2.0\ControlLibrary.pdb
