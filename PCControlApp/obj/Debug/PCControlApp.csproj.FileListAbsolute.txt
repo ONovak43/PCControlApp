@@ -1,0 +1,14 @@
+C:\Users\onova\source\repos\PCControlApp\PCControlApp\bin\Debug\PCControlApp.exe.config
+C:\Users\onova\source\repos\PCControlApp\PCControlApp\bin\Debug\PCControlApp.exe
+C:\Users\onova\source\repos\PCControlApp\PCControlApp\bin\Debug\PCControlApp.pdb
+C:\Users\onova\source\repos\PCControlApp\PCControlApp\obj\Debug\PCControlApp.csprojAssemblyReference.cache
+C:\Users\onova\source\repos\PCControlApp\PCControlApp\obj\Debug\App.g.cs
+C:\Users\onova\source\repos\PCControlApp\PCControlApp\obj\Debug\PCControlApp_MarkupCompile.cache
+C:\Users\onova\source\repos\PCControlApp\PCControlApp\obj\Debug\PCControlApp_MarkupCompile.lref
+C:\Users\onova\source\repos\PCControlApp\PCControlApp\obj\Debug\PCControlApp.g.resources
+C:\Users\onova\source\repos\PCControlApp\PCControlApp\obj\Debug\PCControlApp.Properties.Resources.resources
+C:\Users\onova\source\repos\PCControlApp\PCControlApp\obj\Debug\PCControlApp.csproj.GenerateResource.cache
+C:\Users\onova\source\repos\PCControlApp\PCControlApp\obj\Debug\PCControlApp.exe
+C:\Users\onova\source\repos\PCControlApp\PCControlApp\obj\Debug\PCControlApp.pdb
+C:\Users\onova\source\repos\PCControlApp\PCControlApp\obj\Debug\PcViewerForm.g.cs
+C:\Users\onova\source\repos\PCControlApp\PCControlApp\obj\Debug\PcViewerForm.baml
