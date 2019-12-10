@@ -1,7 +1,3 @@
 .vs
-ControlUI\bin\
-ControlUI\bin\Debug
-ControlUI\obj\Debug
-!ControlLibrary\bin\Debug
-ControlLibrary/bin/
-ControlLibrary\bin\Debug\obj
+**/bin/Debug
+**/bin/Release
