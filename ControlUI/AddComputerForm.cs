@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ControlLibrary;
+using System;
 using System.Windows.Forms;
-using ControlLibrary;
 
 namespace ControlUI
 {
@@ -27,7 +20,7 @@ namespace ControlUI
 
         private void addComputerButton_Click(object sender, EventArgs e)
         {
-            if(ValidateForm())
+            if (ValidateForm())
             {
                 ComputerModel c = new ComputerModel(hostInput.Text, macAddressInput.Text)
                 {
@@ -49,7 +42,7 @@ namespace ControlUI
 
         private bool ValidateForm()
         {
-            if(hostInput.Text.Length == 0)
+            if (hostInput.Text.Length == 0)
             {
                 return false;
             }
@@ -71,7 +64,7 @@ namespace ControlUI
             DialogResult dialogResult = MessageBox.Show($"Jste si jisti, že chcete odstranit počítač \"{ c.Name }\"?", $"Odstranění počítače { c.Name }", MessageBoxButtons.YesNo);
 
             if (dialogResult == DialogResult.Yes && c != null)
-            { 
+            {
                 GlobalConfig.Connections.RemoveComputer(c);
 
                 WireUpLists();

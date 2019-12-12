@@ -29,27 +29,29 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.computerList = new System.Windows.Forms.ListView();
+            this.computerListView = new System.Windows.Forms.ListView();
             this.computerIcon = new System.Windows.Forms.ImageList(this.components);
             this.startAll = new System.Windows.Forms.Button();
             this.stopAll = new System.Windows.Forms.Button();
             this.teachersComputer = new System.Windows.Forms.Button();
+            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.SuspendLayout();
             // 
-            // computerList
+            // computerListView
             // 
-            this.computerList.Activation = System.Windows.Forms.ItemActivation.TwoClick;
-            this.computerList.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.computerList.HideSelection = false;
-            this.computerList.LargeImageList = this.computerIcon;
-            this.computerList.Location = new System.Drawing.Point(144, 12);
-            this.computerList.MultiSelect = false;
-            this.computerList.Name = "computerList";
-            this.computerList.Size = new System.Drawing.Size(572, 466);
-            this.computerList.TabIndex = 0;
-            this.computerList.UseCompatibleStateImageBehavior = false;
-            this.computerList.DoubleClick += new System.EventHandler(this.computerList_DoubleClick);
-            this.computerList.KeyDown += new System.Windows.Forms.KeyEventHandler(this.computerList_KeyDown);
+            this.computerListView.Activation = System.Windows.Forms.ItemActivation.TwoClick;
+            this.computerListView.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.computerListView.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.computerListView.HideSelection = false;
+            this.computerListView.LargeImageList = this.computerIcon;
+            this.computerListView.Location = new System.Drawing.Point(144, 12);
+            this.computerListView.MultiSelect = false;
+            this.computerListView.Name = "computerListView";
+            this.computerListView.Size = new System.Drawing.Size(572, 466);
+            this.computerListView.TabIndex = 0;
+            this.computerListView.UseCompatibleStateImageBehavior = false;
+            this.computerListView.DoubleClick += new System.EventHandler(this.computerList_DoubleClick);
+            this.computerListView.KeyDown += new System.Windows.Forms.KeyEventHandler(this.computerList_KeyDown);
             // 
             // computerIcon
             // 
@@ -101,31 +103,46 @@
             this.teachersComputer.Text = "PC učitele";
             this.teachersComputer.UseVisualStyleBackColor = true;
             // 
+            // linkLabel1
+            // 
+            this.linkLabel1.AutoSize = true;
+            this.linkLabel1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.linkLabel1.Location = new System.Drawing.Point(8, 457);
+            this.linkLabel1.Name = "linkLabel1";
+            this.linkLabel1.Size = new System.Drawing.Size(120, 21);
+            this.linkLabel1.TabIndex = 4;
+            this.linkLabel1.TabStop = true;
+            this.linkLabel1.Text = "Správa počítačů";
+            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
+            // 
             // ComputerViewForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 30F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(738, 501);
+            this.Controls.Add(this.linkLabel1);
             this.Controls.Add(this.teachersComputer);
             this.Controls.Add(this.stopAll);
             this.Controls.Add(this.startAll);
-            this.Controls.Add(this.computerList);
+            this.Controls.Add(this.computerListView);
             this.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.Margin = new System.Windows.Forms.Padding(6, 7, 6, 7);
             this.Name = "ComputerViewForm";
             this.Text = "Ovládání počítačů v učebně";
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
 
-        private System.Windows.Forms.ListView computerList;
+        private System.Windows.Forms.ListView computerListView;
         private System.Windows.Forms.ImageList computerIcon;
         private System.Windows.Forms.Button startAll;
         private System.Windows.Forms.Button stopAll;
         private System.Windows.Forms.Button teachersComputer;
+        private System.Windows.Forms.LinkLabel linkLabel1;
     }
 }
 

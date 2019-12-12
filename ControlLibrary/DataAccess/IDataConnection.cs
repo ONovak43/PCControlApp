@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace ControlLibrary.DataAccess
 {
@@ -10,6 +8,6 @@ namespace ControlLibrary.DataAccess
 
         void RemoveComputer(ComputerModel model);
 
-        List<ComputerModel> GetComputers_All();        
+        List<ComputerModel> GetComputers_All();
     }
 }

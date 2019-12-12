@@ -51,7 +51,7 @@
             // hostLabel
             // 
             this.hostLabel.AutoSize = true;
-            this.hostLabel.Location = new System.Drawing.Point(12, 28);
+            this.hostLabel.Location = new System.Drawing.Point(12, 123);
             this.hostLabel.Name = "hostLabel";
             this.hostLabel.Size = new System.Drawing.Size(56, 30);
             this.hostLabel.TabIndex = 1;
@@ -60,7 +60,7 @@
             // hostInput
             // 
             this.hostInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.hostInput.Location = new System.Drawing.Point(188, 28);
+            this.hostInput.Location = new System.Drawing.Point(188, 123);
             this.hostInput.Name = "hostInput";
             this.hostInput.Size = new System.Drawing.Size(249, 35);
             this.hostInput.TabIndex = 2;
@@ -114,7 +114,7 @@
             // nameLabel
             // 
             this.nameLabel.AutoSize = true;
-            this.nameLabel.Location = new System.Drawing.Point(12, 123);
+            this.nameLabel.Location = new System.Drawing.Point(12, 30);
             this.nameLabel.Name = "nameLabel";
             this.nameLabel.Size = new System.Drawing.Size(162, 30);
             this.nameLabel.TabIndex = 7;
@@ -122,7 +122,7 @@
             // 
             // nameInput
             // 
-            this.nameInput.Location = new System.Drawing.Point(188, 123);
+            this.nameInput.Location = new System.Drawing.Point(188, 30);
             this.nameInput.Name = "nameInput";
             this.nameInput.Size = new System.Drawing.Size(249, 35);
             this.nameInput.TabIndex = 8;

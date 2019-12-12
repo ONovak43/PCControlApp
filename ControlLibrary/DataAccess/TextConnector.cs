@@ -1,8 +1,6 @@
-﻿using System;
+﻿using ControlLibrary.DataAccess.TextHelpers;
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows.Forms;
-using ControlLibrary.DataAccess.TextHelpers;
 
 namespace ControlLibrary.DataAccess
 {
@@ -19,9 +17,9 @@ namespace ControlLibrary.DataAccess
 
             int currentId = 1;
 
-            if(computers.Count > 0)
+            if (computers.Count > 0)
             {
-                currentId = computers.OrderByDescending(x => x.Id).First().Id + 1; 
+                currentId = computers.OrderByDescending(x => x.Id).First().Id + 1;
             }
 
             model.Id = currentId;

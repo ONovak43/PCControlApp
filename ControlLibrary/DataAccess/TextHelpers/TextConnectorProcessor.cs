@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
@@ -10,7 +8,7 @@ namespace ControlLibrary.DataAccess.TextHelpers
     public static class TextConnectorProcessor
     {
         public static string FullFilePath(this string fileName) => $"{ ConfigurationManager.AppSettings["filePath"] }\\{ fileName }";
-        
+
 
         public static List<string> LoadFile(this string file)
         {
@@ -43,7 +41,7 @@ namespace ControlLibrary.DataAccess.TextHelpers
         {
             List<string> lines = new List<string>();
 
-            foreach(ComputerModel c in models)
+            foreach (ComputerModel c in models)
             {
                 lines.Add($"{ c.Id },{c.Name},{ c.Domain },{ c.MacAddress }");
             }
