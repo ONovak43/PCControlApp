@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
+using System.Windows.Forms;
 using ControlLibrary.DataAccess.TextHelpers;
 
 namespace ControlLibrary.DataAccess
@@ -16,6 +17,15 @@ namespace ControlLibrary.DataAccess
         {
             List<ComputerModel> computers = ComputersFile.FullFilePath().LoadFile().ConvertToComputerModels();
 
+            int currentId = 1;
+
+            if(computers.Count > 0)
+            {
+                currentId = computers.OrderByDescending(x => x.Id).First().Id + 1; 
+            }
+
+            model.Id = currentId;
+
             computers.Add(model);
 
             computers.SaveToComputerFile(ComputersFile);
@@ -23,11 +33,18 @@ namespace ControlLibrary.DataAccess
             return model;
         }
 
-        public ComputerModel GetComputers(ComputerModel model)
+        public void RemoveComputer(ComputerModel model)
         {
-            // Load the text file
-            // Convert the text to List<ComputerModel>
-            return model;
+            List<ComputerModel> computers = ComputersFile.FullFilePath().LoadFile().ConvertToComputerModels();
+
+            computers.RemoveAll(m => m.Id == model.Id);
+
+            computers.SaveToComputerFile(ComputersFile);
+        }
+
+        public List<ComputerModel> GetComputers_All()
+        {
+            return ComputersFile.FullFilePath().LoadFile().ConvertToComputerModels();
         }
     }
 }

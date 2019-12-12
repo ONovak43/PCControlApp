@@ -7,6 +7,9 @@ namespace ControlLibrary.DataAccess
     public interface IDataConnection
     {
         ComputerModel AddComputer(ComputerModel model);
-        ComputerModel GetComputers(ComputerModel model);        
+
+        void RemoveComputer(ComputerModel model);
+
+        List<ComputerModel> GetComputers_All();        
     }
 }

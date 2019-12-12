@@ -4,8 +4,21 @@ using System.Threading.Tasks;
 
 namespace ControlLibrary
 {
+    /// <summary>
+    /// Represents computer.
+    /// </summary>
     public class ComputerModel
     {
+        /// <summary>
+        /// The unique identifier for the computer.
+        /// </summary>
+        public int Id { get; set; }
+
+        /// <summary>
+        /// Represents the name for this particular computer.
+        /// </summary>
+        public string Name { get; set; }
+
         /// <summary>
         /// Represents the domain (host) for this particular computer.
         /// </summary>
@@ -16,10 +29,15 @@ namespace ControlLibrary
         /// </summary>
         public string MacAddress { get; }
 
+        public string ComputerName
+        {
+            get => $"{ Name }: { Domain }, { MacAddress }";
+        }
+
         /// <summary>
         /// Value thats set on true for - - after computer starts.
         /// </summary>
-        public bool isStarting = false;
+        public bool IsStarting = false;
 
         public ComputerModel(string domain, string macAddress)
         {
@@ -32,10 +50,10 @@ namespace ControlLibrary
 
         public async void Start()
         {
-            if (!isStarting)
+            if (!IsStarting)
             {
                 await Network.WakeOnLan(MacAddress);
-                isStarting = true;
+                IsStarting = true;
                 StopStarting();
             }
         }
@@ -43,7 +61,7 @@ namespace ControlLibrary
         private async void StopStarting()
         {
             await Task.Delay(30000);
-            isStarting = false;
+            IsStarting = false;
         }
 
         public async Task<bool> IsRunning() => await Network.Ping(Domain);

@@ -146,7 +146,7 @@ namespace ControlUI
             selectedComputer.Selected = false;
             selectedComputer.ImageIndex = 0;
 
-            if (!_computers[content].isStarting)
+            if (!_computers[content].IsStarting)
             {
                 _computers[content].Start();
             }

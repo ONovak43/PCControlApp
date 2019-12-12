@@ -16,15 +16,30 @@ namespace ControlUI
         public AddComputerForm()
         {
             InitializeComponent();
+            WireUpLists();
+        }
+
+        private void WireUpLists()
+        {
+            computersListBox.DataSource = GlobalConfig.Connections.GetComputers_All();
+            computersListBox.DisplayMember = "ComputerName";
         }
 
         private void addComputerButton_Click(object sender, EventArgs e)
         {
             if(ValidateForm())
             {
-                ComputerModel c = new ComputerModel(hostInput.Text, macAddressInput.Text);
+                ComputerModel c = new ComputerModel(hostInput.Text, macAddressInput.Text)
+                {
+                    Name = nameInput.Text
+                };
 
                 GlobalConfig.Connections.AddComputer(c);
+
+                hostInput.Text = "";
+                macAddressInput.Text = "";
+                nameInput.Text = "";
+                WireUpLists();
             }
             else
             {
@@ -42,7 +57,25 @@ namespace ControlUI
             {
                 return false;
             }
+            if (nameInput.Text.Length == 0)
+            {
+                return false;
+            }
             return true;
+        }
+
+        private void removeComputer_Click(object sender, EventArgs e)
+        {
+            ComputerModel c = (ComputerModel)computersListBox.SelectedItem;
+
+            DialogResult dialogResult = MessageBox.Show($"Jste si jisti, že chcete odstranit počítač \"{ c.Name }\"?", $"Odstranění počítače { c.Name }", MessageBoxButtons.YesNo);
+
+            if (dialogResult == DialogResult.Yes && c != null)
+            { 
+                GlobalConfig.Connections.RemoveComputer(c);
+
+                WireUpLists();
+            }
         }
     }
 }

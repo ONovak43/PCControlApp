@@ -9,10 +9,8 @@ namespace ControlLibrary.DataAccess.TextHelpers
 {
     public static class TextConnectorProcessor
     {
-        public static string FullFilePath(this string fileName)
-        {
-            return $"{ ConfigurationManager.AppSettings["filePath"] }\\{ fileName }";
-        }
+        public static string FullFilePath(this string fileName) => $"{ ConfigurationManager.AppSettings["filePath"] }\\{ fileName }";
+        
 
         public static List<string> LoadFile(this string file)
         {
@@ -32,7 +30,9 @@ namespace ControlLibrary.DataAccess.TextHelpers
             {
                 string[] cols = line.Split(',');
 
-                ComputerModel c = new ComputerModel(cols[0], cols[1]);
+                ComputerModel c = new ComputerModel(cols[2], cols[3]);
+                c.Id = int.Parse(cols[0]);
+                c.Name = cols[1];
                 output.Add(c);
             }
 
@@ -45,7 +45,7 @@ namespace ControlLibrary.DataAccess.TextHelpers
 
             foreach(ComputerModel c in models)
             {
-                lines.Add($"{ c.Domain },{ c.MacAddress }");
+                lines.Add($"{ c.Id },{c.Name},{ c.Domain },{ c.MacAddress }");
             }
 
             File.WriteAllLines(fileName.FullFilePath(), lines);
