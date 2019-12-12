@@ -23,7 +23,7 @@ namespace ControlLibrary
 
         public ComputerModel(string domain, string macAddress)
         {
-            if (!IsMacAddress(macAddress))
+            if (!macAddress.IsMacAddress())
                 throw new ArgumentException(message: "Invalid argument", paramName: nameof(macAddress));
 
             Domain = domain;
@@ -44,15 +44,8 @@ namespace ControlLibrary
         {
             await Task.Delay(30000);
             isStarting = false;
-
         }
 
         public async Task<bool> IsRunning() => await Network.Ping(Domain);
-
-
-        private bool IsMacAddress(string address) => Regex.IsMatch(address, "^((([a-fA-F0-9][a-fA-F0-9]+[-]){5}|" +
-                "([a-fA-F0-9][a-fA-F0-9]+[:]){5})([a-fA-F0-9][a-fA-F0-9])$)|" +
-                "(^([a-fA-F0-9][a-fA-F0-9][a-fA-F0-9][a-fA-F0-9]+[.]){2}" +
-                "([a-fA-F0-9][a-fA-F0-9][a-fA-F0-9][a-fA-F0-9]))$");
     }
 }

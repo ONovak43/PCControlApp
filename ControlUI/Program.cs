@@ -20,7 +20,7 @@ namespace ControlUI
             // Initialize the text connection
             ControlLibrary.GlobalConfig.InitializeConnections();
 
-            Application.Run(new ComputerViewForm());
+            Application.Run(new AddComputerForm());
         }
     }
 }

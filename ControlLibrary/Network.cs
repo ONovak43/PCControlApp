@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ControlLibrary
 {
-    internal static class Network
+    public static class Network
     {
         public static async Task WakeOnLan(string macAddress, string ip = "255.255.255.255", int port = 7)
         {
@@ -73,6 +73,11 @@ namespace ControlLibrary
                 return ms.ToArray(); // 102 bytes magic packet.
             }
         }
+
+        public static bool IsMacAddress(this string address) => Regex.IsMatch(address, "^((([a-fA-F0-9][a-fA-F0-9]+[-]){5}|" +
+        "([a-fA-F0-9][a-fA-F0-9]+[:]){5})([a-fA-F0-9][a-fA-F0-9])$)|" +
+        "(^([a-fA-F0-9][a-fA-F0-9][a-fA-F0-9][a-fA-F0-9]+[.]){2}" +
+        "([a-fA-F0-9][a-fA-F0-9][a-fA-F0-9][a-fA-F0-9]))$");
 
     }
 }

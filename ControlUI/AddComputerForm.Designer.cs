@@ -1,6 +1,6 @@
 ﻿namespace ControlUI
 {
-    partial class AddComputer
+    partial class AddComputerForm
     {
         /// <summary>
         /// Required designer variable.
@@ -32,7 +32,7 @@
             this.hostLabel = new System.Windows.Forms.Label();
             this.hostInput = new System.Windows.Forms.TextBox();
             this.macAddressInput = new System.Windows.Forms.TextBox();
-            this.addButton = new System.Windows.Forms.Button();
+            this.addComputerButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // macAddressLabel
@@ -68,34 +68,35 @@
             this.macAddressInput.Size = new System.Drawing.Size(233, 35);
             this.macAddressInput.TabIndex = 3;
             // 
-            // addButton
+            // addComputerButton
             // 
-            this.addButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.addButton.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
-            this.addButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(102)))), ((int)(((byte)(102)))));
-            this.addButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
-            this.addButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.addButton.Location = new System.Drawing.Point(111, 133);
-            this.addButton.Name = "addButton";
-            this.addButton.Size = new System.Drawing.Size(207, 41);
-            this.addButton.TabIndex = 4;
-            this.addButton.Text = "Přidat počítač";
-            this.addButton.UseVisualStyleBackColor = true;
+            this.addComputerButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.addComputerButton.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
+            this.addComputerButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(102)))), ((int)(((byte)(102)))));
+            this.addComputerButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
+            this.addComputerButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.addComputerButton.Location = new System.Drawing.Point(111, 133);
+            this.addComputerButton.Name = "addComputerButton";
+            this.addComputerButton.Size = new System.Drawing.Size(207, 41);
+            this.addComputerButton.TabIndex = 4;
+            this.addComputerButton.Text = "Přidat počítač";
+            this.addComputerButton.UseVisualStyleBackColor = true;
+            this.addComputerButton.Click += new System.EventHandler(this.addComputerButton_Click);
             // 
-            // AddComputer
+            // AddComputerViewForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 30F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(416, 186);
-            this.Controls.Add(this.addButton);
+            this.Controls.Add(this.addComputerButton);
             this.Controls.Add(this.macAddressInput);
             this.Controls.Add(this.hostInput);
             this.Controls.Add(this.hostLabel);
             this.Controls.Add(this.macAddressLabel);
             this.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.Margin = new System.Windows.Forms.Padding(6, 7, 6, 7);
-            this.Name = "AddComputer";
+            this.Name = "AddComputerViewForm";
             this.Text = "Přidat počítač";
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -108,6 +109,6 @@
         private System.Windows.Forms.Label hostLabel;
         private System.Windows.Forms.TextBox hostInput;
         private System.Windows.Forms.TextBox macAddressInput;
-        private System.Windows.Forms.Button addButton;
+        private System.Windows.Forms.Button addComputerButton;
     }
 }
