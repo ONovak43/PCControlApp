@@ -6,6 +6,8 @@ namespace ControlUI
 {
     public partial class AddComputerForm : Form
     {
+        private int _selectedContextMenuItem;
+
         public AddComputerForm()
         {
             InitializeComponent();
@@ -29,9 +31,10 @@ namespace ControlUI
 
                 GlobalConfig.Connections.AddComputer(c);
 
-                hostInput.Text = "";
-                macAddressInput.Text = "";
                 nameInput.Text = "";
+                hostInput.Text = "";
+                macAddressInput.Text = "";                
+
                 WireUpLists();
             }
             else
@@ -42,7 +45,7 @@ namespace ControlUI
 
         private bool ValidateForm()
         {
-            if (hostInput.Text.Length == 0)
+            if (nameInput.Text.Length == 0)
             {
                 return false;
             }
@@ -50,7 +53,7 @@ namespace ControlUI
             {
                 return false;
             }
-            if (nameInput.Text.Length == 0)
+            if (hostInput.Text.Length == 0)
             {
                 return false;
             }
@@ -68,6 +71,22 @@ namespace ControlUI
                 GlobalConfig.Connections.RemoveComputer(c);
 
                 WireUpLists();
+            }
+        }
+
+        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            ComputerModel c = (ComputerModel)computersListBox.Items[_selectedContextMenuItem];
+     
+            Clipboard.SetText($"{ c.Name }: { c.Domain }, { c.MacAddress }");
+        }
+
+        private void computersListBox_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right && computersListBox.IndexFromPoint(e.Location) != ListBox.NoMatches)
+            {
+                _selectedContextMenuItem = computersListBox.IndexFromPoint(e.Location);
+                computerContextMenu.Show(Cursor.Position);                
             }
         }
     }

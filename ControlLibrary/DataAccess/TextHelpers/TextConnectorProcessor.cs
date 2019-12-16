@@ -28,9 +28,11 @@ namespace ControlLibrary.DataAccess.TextHelpers
             {
                 string[] cols = line.Split(',');
 
-                ComputerModel c = new ComputerModel(cols[2], cols[3]);
-                c.Id = int.Parse(cols[0]);
-                c.Name = cols[1];
+                ComputerModel c = new ComputerModel(cols[2], cols[3])
+                {
+                    Id = int.Parse(cols[0]),
+                    Name = cols[1]
+                };
                 output.Add(c);
             }
 

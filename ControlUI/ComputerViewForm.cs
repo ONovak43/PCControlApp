@@ -11,7 +11,7 @@ namespace ControlUI
         /// <summary>
         /// The set of computers.
         /// </summary>
-        private readonly List<ComputerModel> computers = GlobalConfig.Connections.GetComputers_All();
+        private List<ComputerModel> computers = GlobalConfig.Connections.GetComputers_All();
 
         public ComputerViewForm()
         {
@@ -21,8 +21,7 @@ namespace ControlUI
             computerIcon.Images.Add(Image.FromFile("C:\\Users\\onova\\source\\repos\\PCControlApp\\icon2.png"));
             computerIcon.Images.Add(Image.FromFile("C:\\Users\\onova\\source\\repos\\PCControlApp\\icon3.png"));
 
-            WireUpListView();
-            CheckComputersStatus();
+            WireUpListView(); 
             SetTimer();
         }
 
@@ -34,11 +33,11 @@ namespace ControlUI
                 {
                     Text = computer.Name,
                     ImageIndex = 0,
-                    Tag = computer.Id.ToString()
                 };
 
                 computerListView.Items.Add(lvi);
             }
+            CheckComputersStatus();
         }
 
         private async void SetComputerStatus(int itemInList)
@@ -61,19 +60,23 @@ namespace ControlUI
             }
         }
 
-        private void SetComputer(ListViewItem selectedComputer)
+        private async void SetComputer(ListViewItem selectedComputer)
         {
-            var content = Int32.Parse(selectedComputer.Tag.ToString());
+            int index = selectedComputer.Index;
 
             selectedComputer.Selected = false;
             selectedComputer.ImageIndex = 0;
 
-            if (!computers[content].IsStarting)
+            if (!computers[index].IsStarting && !(await computers[index].IsRunning()))
             {
-                computers[content].Start();
+                computers[index].Start();
+            }
+            else if(await computers[index].IsRunning())
+            {
+                computers[index].Shutdown();
             }
 
-            SetComputerStatus(content);
+            SetComputerStatus(index);
         }
 
         private void computerList_DoubleClick(object sender, EventArgs e)
@@ -98,7 +101,7 @@ namespace ControlUI
         {
             Timer aTimer = new Timer
             {
-                Interval = 60000,
+                Interval = 30000,
                 Enabled = true
             };
             aTimer.Tick += (s, e) => CheckComputersStatus();
@@ -108,7 +111,11 @@ namespace ControlUI
         {
             AddComputerForm addComputerForm = new AddComputerForm();
 
-            addComputerForm.Show();
+            addComputerForm.ShowDialog();
+            computers = GlobalConfig.Connections.GetComputers_All();
+
+            computerListView.Items.Clear();
+            WireUpListView();
         }
 
         /*
