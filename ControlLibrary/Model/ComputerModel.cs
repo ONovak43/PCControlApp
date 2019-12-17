@@ -1,10 +1,7 @@
-﻿using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http;
-using System;
+﻿using System;
 using System.Configuration;
-using System.Diagnostics;
 using System.Management;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace ControlLibrary
 {
@@ -48,79 +45,63 @@ namespace ControlLibrary
             if (!macAddress.IsMacAddress())
             {
                 throw new ArgumentException(message: "Invalid argument", paramName: nameof(macAddress));
-            }               
+            }
 
             Domain = domain;
             MacAddress = macAddress;
         }
-
         public async void Start()
         {
             await Network.WakeOnLan(MacAddress);
             IsStarting = true;
             StopStarting();
         }
-
-        public void Shutdown()
+        public bool Shutdown()
         {
-
-            System.Management.ConnectionOptions options = new System.Management.ConnectionOptions
+            ConnectionOptions options = new ConnectionOptions
             {
-                    EnablePrivileges = true,
-                    Username = "User",
-                    Password = ""
-                };
+                EnablePrivileges = true,
+                Username = ConfigurationManager.AppSettings["userName"],
+                Password = ConfigurationManager.AppSettings["userPassword"]
+            };
 
-                ManagementScope scope = new ManagementScope(
-                    $"\\\\{ Domain }\\root\\cimv2", options);
-
+            ManagementScope scope = new ManagementScope($"\\\\{ Domain }\\root\\cimv2", options);
+            try
+            {
                 scope.Connect();
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return false;
+            }
 
-                //Query system for Operating System information
-                ObjectQuery query = new ObjectQuery(
-                    "SELECT * FROM Win32_OperatingSystem");
-                ManagementObjectSearcher searcher =
-                    new ManagementObjectSearcher(scope, query);
+            SelectQuery query = new SelectQuery("Win32_OperatingSystem");
+            ManagementObjectSearcher searcher = new ManagementObjectSearcher(scope, query);
 
-                ManagementObjectCollection queryCollection = searcher.Get();
+            foreach (ManagementObject os in searcher.Get())
+            {
+                // Obtain in-parameters for the method
+                ManagementBaseObject inParams =
+                    os.GetMethodParameters("Win32Shutdown");
 
-                MessageBox.Show("adad");
+                // Add the input parameters.
+                inParams["Flags"] = 1;
 
-                foreach (ManagementObject m in queryCollection)
-                {
-                    // Display the remote computer information
-                    MessageBox.Show($"Computer Name : { m["csname"] }+{ m["Version"] }+{ m["Manufacturer"] }");
-                }
+                // Execute the method.
+                os.InvokeMethod("Win32Shutdown", inParams, null);
+            }
 
-                /*SelectQuery query = new SelectQuery("Win32_OperatingSystem");
-                ManagementObjectSearcher searcher =
-                    new ManagementObjectSearcher(scope, query);
-
-                foreach (ManagementObject os in searcher.Get())
-                {
-                    // Obtain in-parameters for the method
-                    ManagementBaseObject inParams =
-                        os.GetMethodParameters("Win32Shutdown");
-
-                    // Add the input parameters.
-                    inParams["Flags"] = 2;
-
-                    // Execute the method and obtain the return values.
-                    ManagementBaseObject outParams =
-                        os.InvokeMethod("Win32Shutdown", inParams, null);*/
-
+            return true;
         }
-
         public async Task<bool> IsRunning()
         {
             return await Network.Ping(Domain);
         }
-
         private async void StopStarting()
         {
             await Task.Delay(60000);
             IsStarting = false;
-        } 
+        }
 
     }
 }

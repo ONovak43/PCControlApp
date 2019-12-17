@@ -21,7 +21,7 @@ namespace ControlUI
             computerIcon.Images.Add(Image.FromFile("C:\\Users\\onova\\source\\repos\\PCControlApp\\icon2.png"));
             computerIcon.Images.Add(Image.FromFile("C:\\Users\\onova\\source\\repos\\PCControlApp\\icon3.png"));
 
-            WireUpListView(); 
+            WireUpListView();
             SetTimer();
         }
 
@@ -71,7 +71,7 @@ namespace ControlUI
             {
                 computers[index].Start();
             }
-            else if(await computers[index].IsRunning())
+            else if (await computers[index].IsRunning())
             {
                 computers[index].Shutdown();
             }
