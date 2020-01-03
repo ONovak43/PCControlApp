@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ControlLibrary.Wrapper;
+using System;
 using System.Configuration;
 using System.Management;
 using System.Threading.Tasks;
@@ -28,7 +29,7 @@ namespace ControlLibrary
         /// <summary>
         /// Represents the MAC address for this particular computer.
         /// </summary>
-        public string MacAddress { get; }
+        public MacAddress MacAddress { get; }
 
         public string ComputerName
         {
@@ -40,15 +41,11 @@ namespace ControlLibrary
         /// </summary>
         public bool IsStarting = false;
 
-        public ComputerModel(string domain, string macAddress)
+        public ComputerModel(string domain, MacAddress macAddress, string name)
         {
-            if (!macAddress.IsMacAddress())
-            {
-                throw new ArgumentException(message: "Invalid argument", paramName: nameof(macAddress));
-            }
-
             Domain = domain;
             MacAddress = macAddress;
+            Name = name;
         }
         public async void Start()
         {

@@ -46,10 +46,8 @@ namespace ControlUI
             {
                 computerListView.Items[itemInList].ImageIndex = 2;
             }
-            else
-            {
-                computerListView.Items[itemInList].ImageIndex = 0;
-            }
+
+            computerListView.Items[itemInList].ImageIndex = 0;
         }
 
         private void CheckComputersStatus()

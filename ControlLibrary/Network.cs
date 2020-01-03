@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ControlLibrary.Wrapper;
+using System;
 using System.IO;
 using System.Net;
 using System.Net.NetworkInformation;
@@ -10,7 +11,7 @@ namespace ControlLibrary
 {
     public static class Network
     {
-        public static async Task WakeOnLan(string macAddress, string ip = "255.255.255.255", int port = 7)
+        public static async Task WakeOnLan(MacAddress macAddress, string ip = "255.255.255.255", int port = 7)
         {
             byte[] magicPacket = BuildMagicPacket(macAddress);
 
@@ -47,14 +48,14 @@ namespace ControlLibrary
             return false;
         }
 
-        private static byte[] BuildMagicPacket(string macAddress) // MacAddress in any standard HEX format.
+        private static byte[] BuildMagicPacket(MacAddress macAddress) // MacAddress in any standard HEX format.
         {
-            macAddress = Regex.Replace(macAddress, "[: -]", "");
+            string address = Regex.Replace(macAddress.Address, "[: -]", "");
             var macBytes = new byte[6];
 
             for (var i = 0; i < 6; i++)
             {
-                macBytes[i] = Convert.ToByte(macAddress.Substring(i * 2, 2), 16);
+                macBytes[i] = Convert.ToByte(address.Substring(i * 2, 2), 16);
             }
 
             using (MemoryStream ms = new MemoryStream())
@@ -73,11 +74,6 @@ namespace ControlLibrary
                 return ms.ToArray(); // 102 bytes magic packet.
             }
         }
-
-        public static bool IsMacAddress(this string address) => Regex.IsMatch(address, "^((([a-fA-F0-9][a-fA-F0-9]+[-]){5}|" +
-        "([a-fA-F0-9][a-fA-F0-9]+[:]){5})([a-fA-F0-9][a-fA-F0-9])$)|" +
-        "(^([a-fA-F0-9][a-fA-F0-9][a-fA-F0-9][a-fA-F0-9]+[.]){2}" +
-        "([a-fA-F0-9][a-fA-F0-9][a-fA-F0-9][a-fA-F0-9]))$");
 
     }
 }

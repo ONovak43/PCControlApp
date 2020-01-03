@@ -1,4 +1,5 @@
 ﻿using ControlLibrary;
+using ControlLibrary.Wrapper;
 using System;
 using System.Windows.Forms;
 
@@ -24,10 +25,9 @@ namespace ControlUI
         {
             if (ValidateForm())
             {
-                ComputerModel c = new ComputerModel(hostInput.Text, macAddressInput.Text)
-                {
-                    Name = nameInput.Text
-                };
+                MacAddress macAddress = new MacAddress(macAddressInput.Text);
+
+                ComputerModel c = new ComputerModel(hostInput.Text, macAddress, nameInput.Text);
 
                 GlobalConfig.Connections.AddComputer(c);
 
@@ -45,18 +45,20 @@ namespace ControlUI
 
         private bool ValidateForm()
         {
-            if (nameInput.Text.Length == 0)
+            try
+            {
+                MacAddress macAddress = new MacAddress(macAddressInput.Text);
+            }
+            catch(ArgumentException)
             {
                 return false;
             }
-            if (macAddressInput.Text.Length == 0 || !macAddressInput.Text.IsMacAddress())
+
+            if (nameInput.Text.Length == 0 || hostInput.Text.Length == 0)
             {
                 return false;
             }
-            if (hostInput.Text.Length == 0)
-            {
-                return false;
-            }
+
             return true;
         }
 
