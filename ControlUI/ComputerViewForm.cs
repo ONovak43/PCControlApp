@@ -65,13 +65,13 @@ namespace ControlUI
             selectedComputer.Selected = false;
             selectedComputer.ImageIndex = 0;
 
-            if (!computers[index].IsStarting && !(await computers[index].IsRunning()))
-            {
-                computers[index].Start();
-            }
-            else if (await computers[index].IsRunning())
+            if (await computers[index].IsRunning())
             {
                 computers[index].Shutdown();
+            }
+            else
+            {
+                computers[index].Start();
             }
 
             SetComputerStatus(index);

@@ -1,4 +1,6 @@
-﻿using ControlLibrary.Wrapper;
+﻿using ControlLibrary.Factory;
+using ControlLibrary.Service;
+using ControlLibrary.Wrapper;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
@@ -30,8 +32,9 @@ namespace ControlLibrary.DataAccess.TextHelpers
                 string[] cols = line.Split(',');
 
                 MacAddress macAddress = new MacAddress(cols[3]);
+                IComputerService computerService = ComputerServiceFactory.GetComputerService(cols[2], macAddress);
 
-                ComputerModel c = new ComputerModel(cols[2], macAddress, cols[1])
+                ComputerModel c = new ComputerModel((IComputerService) computerService, cols[1], cols[2], macAddress)
                 {
                     Id = int.Parse(cols[0]),
                 };

@@ -1,4 +1,5 @@
-﻿using ControlLibrary.Wrapper;
+﻿using ControlLibrary.Service;
+using ControlLibrary.Wrapper;
 using System;
 using System.Configuration;
 using System.Management;
@@ -31,74 +32,57 @@ namespace ControlLibrary
         /// </summary>
         public MacAddress MacAddress { get; }
 
-        public string ComputerName
+        /// <summary>
+        /// Represents formatted computer's name, domain and mac address. It's used to display info about particular computer.
+        /// </summary>
+        public string ComputerName { get; }
+
+        /// <summary>
+        /// ComputerService to control particular computer.
+        /// </summary>
+        private readonly IComputerService ComputerService;
+
+        /// <summary>
+        ///  Initializes a new instance of the ControlLibrary.ComputerModel class representing 
+        ///    the specified computer, with the specified options.
+        /// </summary>
+        /// <param name="computerService">Initialized ComputerService with domain and MAC address</param>
+        /// <param name="name">Name of this particular computer</param>
+        /// <param name="domain">Domain of this particular computer</param>
+        /// <param name="macAddress">MAC address of this particular computer</param>
+        public ComputerModel(IComputerService computerService, string name, string domain, MacAddress macAddress)
         {
-            get => $"{ Name }: { Domain }, { MacAddress }";
+            Name = name;
+            ComputerService = computerService;
+            Domain = domain;
+            MacAddress = macAddress;
+            ComputerName = $"{ Name }: { domain }, { macAddress }";
         }
 
         /// <summary>
-        /// Value thats set on true for - - after computer starts.
+        /// Start the specified computer. 
         /// </summary>
-        public bool IsStarting = false;
+        public void Start()
+        {
+            ComputerService.Start();
+        }
 
-        public ComputerModel(string domain, MacAddress macAddress, string name)
-        {
-            Domain = domain;
-            MacAddress = macAddress;
-            Name = name;
-        }
-        public async void Start()
-        {
-            await Network.WakeOnLan(MacAddress);
-            IsStarting = true;
-            StopStarting();
-        }
+        /// <summary>
+        /// Shutdown the specified computer.
+        /// </summary>
+        /// <returns>True if signal to shutdown computer was sent sucessfully. False if it failed.</returns>
         public bool Shutdown()
         {
-            ConnectionOptions options = new ConnectionOptions
-            {
-                EnablePrivileges = true,
-                Username = ConfigurationManager.AppSettings["userName"],
-                Password = ConfigurationManager.AppSettings["userPassword"]
-            };
-
-            ManagementScope scope = new ManagementScope($"\\\\{ Domain }\\root\\cimv2", options);
-            try
-            {
-                scope.Connect();
-            }
-            catch (UnauthorizedAccessException)
-            {
-                return false;
-            }
-
-            SelectQuery query = new SelectQuery("Win32_OperatingSystem");
-            ManagementObjectSearcher searcher = new ManagementObjectSearcher(scope, query);
-
-            foreach (ManagementObject os in searcher.Get())
-            {
-                // Obtain in-parameters for the method
-                ManagementBaseObject inParams =
-                    os.GetMethodParameters("Win32Shutdown");
-
-                // Add the input parameters.
-                inParams["Flags"] = 1;
-
-                // Execute the method.
-                os.InvokeMethod("Win32Shutdown", inParams, null);
-            }
-
-            return true;
+            return ComputerService.Shutdown();
         }
+
+        /// <summary>
+        /// Check if computer is online.
+        /// </summary>
+        /// <returns>True if computer is online. False if it's not.</returns>
         public async Task<bool> IsRunning()
         {
-            return await Network.Ping(Domain);
+            return await ComputerService.IsRunning();
         }
-        private async void StopStarting()
-        {
-            await Task.Delay(60000);
-            IsStarting = false;
-        }
-
     }
 }

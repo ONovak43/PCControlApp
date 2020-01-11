@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ControlLibrary
 {
-    public static class Network
+    internal static class Network
     {
         public static async Task WakeOnLan(MacAddress macAddress, string ip = "255.255.255.255", int port = 7)
         {
@@ -23,9 +23,8 @@ namespace ControlLibrary
 
         }
 
-        public static async Task<bool> Ping(string host)
+        public static async Task<bool> Ping(string hostname)
         {
-            var hostname = host;
             var timeout = 1000;
 
             using (Ping ping = new Ping())
@@ -50,7 +49,7 @@ namespace ControlLibrary
 
         private static byte[] BuildMagicPacket(MacAddress macAddress) // MacAddress in any standard HEX format.
         {
-            string address = Regex.Replace(macAddress.Address, "[: -]", "");
+            var address = Regex.Replace(macAddress.Address, "[: -]", "");
             var macBytes = new byte[6];
 
             for (var i = 0; i < 6; i++)

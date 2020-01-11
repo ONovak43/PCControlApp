@@ -1,4 +1,6 @@
 ﻿using ControlLibrary;
+using ControlLibrary.Factory;
+using ControlLibrary.Service;
 using ControlLibrary.Wrapper;
 using System;
 using System.Windows.Forms;
@@ -26,8 +28,9 @@ namespace ControlUI
             if (ValidateForm())
             {
                 MacAddress macAddress = new MacAddress(macAddressInput.Text);
+                IComputerService computerService = ComputerServiceFactory.GetComputerService(hostInput.Text, macAddress);
 
-                ComputerModel c = new ComputerModel(hostInput.Text, macAddress, nameInput.Text);
+                ComputerModel c = new ComputerModel(computerService, nameInput.Text, hostInput.Text, macAddress);
 
                 GlobalConfig.Connections.AddComputer(c);
 
