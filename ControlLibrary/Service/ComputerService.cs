@@ -3,15 +3,16 @@ using System;
 using System.Configuration;
 using System.Management;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace ControlLibrary.Service
 {
     internal class ComputerService: IComputerService
     {
         /// <summary>
-        /// Represents the domain (host) for this particular computer.
+        /// Represents the hostname for this particular computer.
         /// </summary>
-        public string Domain { get; }
+        public string Hostname { get; }
 
         /// <summary>
         /// Represents the MAC address for this particular computer.
@@ -23,9 +24,9 @@ namespace ControlLibrary.Service
         /// </summary>
         public bool IsStarting = false;
         
-        public ComputerService(string domain, MacAddress macAddress)
+        public ComputerService(string hostname, MacAddress macAddress)
         {
-            Domain = domain;
+            Hostname = hostname;
             MacAddress = macAddress;
         }
 
@@ -50,12 +51,17 @@ namespace ControlLibrary.Service
                 Password = ConfigurationManager.AppSettings["userPassword"]
             };
 
-            ManagementScope scope = new ManagementScope($"\\\\{ Domain }\\root\\cimv2", options);
+            ManagementScope scope = new ManagementScope($"\\\\{ Hostname }\\root\\cimv2", options);
+
             try
             {
                 scope.Connect();
             }
             catch (UnauthorizedAccessException)
+            {
+                return false;
+            }
+            catch (ArgumentException)
             {
                 return false;
             }
@@ -81,7 +87,7 @@ namespace ControlLibrary.Service
 
         public async Task<bool> IsRunning()
         {
-            return await Network.Ping(Domain);
+            return await Network.Ping(Hostname);
         }
 
         private async void StopStarting()

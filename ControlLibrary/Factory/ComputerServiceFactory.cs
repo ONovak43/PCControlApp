@@ -8,9 +8,9 @@ namespace ControlLibrary.Factory
 {
     public static class ComputerServiceFactory
     {
-        public static IComputerService GetComputerService(string domain, MacAddress macAddress)
+        public static IComputerService GetComputerService(string hostname, MacAddress macAddress)
         {
-            IComputerService computerService = new ComputerService(domain, macAddress);
+            IComputerService computerService = new ComputerService(hostname, macAddress);
             return computerService;
         }
     }

@@ -33,7 +33,6 @@
             this.computerIcon = new System.Windows.Forms.ImageList(this.components);
             this.startAll = new System.Windows.Forms.Button();
             this.stopAll = new System.Windows.Forms.Button();
-            this.teachersComputer = new System.Windows.Forms.Button();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.SuspendLayout();
             // 
@@ -73,6 +72,7 @@
             this.startAll.TabIndex = 1;
             this.startAll.Text = "Zapnout vše";
             this.startAll.UseVisualStyleBackColor = false;
+            this.startAll.Click += new System.EventHandler(this.startAll_Click);
             // 
             // stopAll
             // 
@@ -87,21 +87,7 @@
             this.stopAll.TabIndex = 2;
             this.stopAll.Text = "Vypnout vše";
             this.stopAll.UseVisualStyleBackColor = true;
-            // 
-            // teachersComputer
-            // 
-            this.teachersComputer.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
-            this.teachersComputer.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(102)))), ((int)(((byte)(102)))));
-            this.teachersComputer.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
-            this.teachersComputer.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.teachersComputer.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.teachersComputer.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.teachersComputer.Location = new System.Drawing.Point(12, 100);
-            this.teachersComputer.Name = "teachersComputer";
-            this.teachersComputer.Size = new System.Drawing.Size(126, 38);
-            this.teachersComputer.TabIndex = 3;
-            this.teachersComputer.Text = "PC učitele";
-            this.teachersComputer.UseVisualStyleBackColor = true;
+            this.stopAll.Click += new System.EventHandler(this.stopAll_Click);
             // 
             // linkLabel1
             // 
@@ -122,12 +108,12 @@
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(738, 501);
             this.Controls.Add(this.linkLabel1);
-            this.Controls.Add(this.teachersComputer);
             this.Controls.Add(this.stopAll);
             this.Controls.Add(this.startAll);
             this.Controls.Add(this.computerListView);
             this.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.Margin = new System.Windows.Forms.Padding(6, 7, 6, 7);
+            this.MaximizeBox = false;
             this.Name = "ComputerViewForm";
             this.Text = "Ovládání počítačů v učebně";
             this.ResumeLayout(false);
@@ -141,7 +127,6 @@
         private System.Windows.Forms.ImageList computerIcon;
         private System.Windows.Forms.Button startAll;
         private System.Windows.Forms.Button stopAll;
-        private System.Windows.Forms.Button teachersComputer;
         private System.Windows.Forms.LinkLabel linkLabel1;
     }
 }

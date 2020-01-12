@@ -153,7 +153,7 @@
             // copyComputerContextMenu
             // 
             this.copyComputerContextMenu.Name = "copyComputerContextMenu";
-            this.copyComputerContextMenu.Size = new System.Drawing.Size(180, 22);
+            this.copyComputerContextMenu.Size = new System.Drawing.Size(125, 22);
             this.copyComputerContextMenu.Text = "Kopírovat";
             this.copyComputerContextMenu.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
             // 
@@ -174,6 +174,7 @@
             this.Controls.Add(this.macAddressLabel);
             this.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.Margin = new System.Windows.Forms.Padding(6, 7, 6, 7);
+            this.MaximizeBox = false;
             this.Name = "AddComputerForm";
             this.Text = "Přidat počítač";
             this.computerContextMenu.ResumeLayout(false);

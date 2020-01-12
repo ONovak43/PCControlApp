@@ -23,9 +23,9 @@ namespace ControlLibrary
         public string Name { get; set; }
 
         /// <summary>
-        /// Represents the domain (host) for this particular computer.
+        /// Represents the hostname for this particular computer.
         /// </summary>
-        public string Domain { get; }
+        public string Hostname { get; }
 
         /// <summary>
         /// Represents the MAC address for this particular computer.
@@ -33,7 +33,7 @@ namespace ControlLibrary
         public MacAddress MacAddress { get; }
 
         /// <summary>
-        /// Represents formatted computer's name, domain and mac address. It's used to display info about particular computer.
+        /// Represents formatted computer's name, Hostname and mac address. It's used to display info about particular computer.
         /// </summary>
         public string ComputerName { get; }
 
@@ -46,17 +46,17 @@ namespace ControlLibrary
         ///  Initializes a new instance of the ControlLibrary.ComputerModel class representing 
         ///    the specified computer, with the specified options.
         /// </summary>
-        /// <param name="computerService">Initialized ComputerService with domain and MAC address</param>
+        /// <param name="computerService">Initialized ComputerService with Hostname and MAC address</param>
         /// <param name="name">Name of this particular computer</param>
-        /// <param name="domain">Domain of this particular computer</param>
+        /// <param name="hostname">Hostname of this particular computer</param>
         /// <param name="macAddress">MAC address of this particular computer</param>
-        public ComputerModel(IComputerService computerService, string name, string domain, MacAddress macAddress)
+        public ComputerModel(IComputerService computerService, string name, string hostname, MacAddress macAddress)
         {
             Name = name;
             ComputerService = computerService;
-            Domain = domain;
+            Hostname = hostname;
             MacAddress = macAddress;
-            ComputerName = $"{ Name }: { domain }, { macAddress }";
+            ComputerName = $"{ Name }: { Hostname }, { macAddress.Address }";
         }
 
         /// <summary>

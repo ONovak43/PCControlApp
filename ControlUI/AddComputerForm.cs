@@ -83,7 +83,7 @@ namespace ControlUI
         {
             ComputerModel c = (ComputerModel)computersListBox.Items[_selectedContextMenuItem];
      
-            Clipboard.SetText($"{ c.Name }: { c.Domain }, { c.MacAddress }");
+            Clipboard.SetText(c.ComputerName);
         }
 
         private void computersListBox_MouseDown(object sender, MouseEventArgs e)

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ControlUI
@@ -25,64 +26,12 @@ namespace ControlUI
             SetTimer();
         }
 
-        private void WireUpListView()
-        {
-            foreach (ComputerModel computer in computers)
-            {
-                var lvi = new ListViewItem()
-                {
-                    Text = computer.Name,
-                    ImageIndex = 0,
-                };
-
-                computerListView.Items.Add(lvi);
-            }
-            CheckComputersStatus();
-        }
-
-        private async void SetComputerStatus(int itemInList)
-        {
-            if (await computers[itemInList].IsRunning())
-            {
-                computerListView.Items[itemInList].ImageIndex = 2;
-            }
-
-            computerListView.Items[itemInList].ImageIndex = 0;
-        }
-
-        private void CheckComputersStatus()
-        {
-            for (var i = 0; i < computers.Count; i++)
-            {
-                SetComputerStatus(i);
-            }
-        }
-
-        private async void SetComputer(ListViewItem selectedComputer)
-        {
-            int index = selectedComputer.Index;
-
-            selectedComputer.Selected = false;
-            selectedComputer.ImageIndex = 0;
-
-            if (await computers[index].IsRunning())
-            {
-                computers[index].Shutdown();
-            }
-            else
-            {
-                computers[index].Start();
-            }
-
-            SetComputerStatus(index);
-        }
-
         private void computerList_DoubleClick(object sender, EventArgs e)
         {
             if (sender is ListView item)
             {
                 ListViewItem selectedItem = item.SelectedItems[0];
-                SetComputer(selectedItem);
+                ChangeComputerState(selectedItem);
             }
         }
 
@@ -91,18 +40,8 @@ namespace ControlUI
             if (sender is ListView item && e.KeyCode == Keys.Enter)
             {
                 ListViewItem selectedItem = item.SelectedItems[0];
-                SetComputer(selectedItem);
+                ChangeComputerState(selectedItem);
             }
-        }
-
-        private void SetTimer()
-        {
-            Timer aTimer = new Timer
-            {
-                Interval = 30000,
-                Enabled = true
-            };
-            aTimer.Tick += (s, e) => CheckComputersStatus();
         }
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -116,33 +55,134 @@ namespace ControlUI
             WireUpListView();
         }
 
-        /*
-         private void DisableAllButtons()
-         {
-             EnableMainButtons(false);
+        private void startAll_Click(object sender, EventArgs e)
+        {
+            DisableMainButtons();
 
-             for (var i = 0; i < _buttons.Count; i++)
-             {
-                 _buttons[i].IsEnabled = false;
-             }
-         }
+            foreach (ComputerModel computer in computers)
+            {
+                computer.Start();
+            }
 
-         private void EnableAllButtons()
-         {
-             EnableMainButtons(true);
+            EnableButtons(false);
+        }
 
-             for (var i = 0; i < _buttons.Count; i++)
-             {
-                 _buttons[i].IsEnabled = true;
-             }
-         }
+        private void stopAll_Click(object sender, EventArgs e)
+        {
+            DisableMainButtons();
 
-         private void EnableMainButtons(bool enabled)
-         {
-             startAll.IsEnabled = enabled;
-             stopAll.IsEnabled = enabled;
-             teacherComputer.IsEnabled = enabled;
-         }
-         */
+            foreach (ComputerModel computer in computers)
+            {
+                if(!computer.Shutdown())
+                {
+                    MessageBox.Show("Někde se vyskytla chyba. Nejspíše jsou špatně zadané přihlašovací údaje nebo host.");
+                }
+            }
+
+            EnableButtons(false);
+        }
+
+        private async void EnableButtons(bool computerStarting)
+        {
+            for (var i = 0; i < 15; i++)
+            {
+                if ((await CheckComputersState()) == computerStarting)
+                {
+                    break;
+                }
+                await Task.Delay(1000);
+            }
+
+            DisableMainButtons(false);
+        }
+
+        private async Task<bool> CheckComputersState()
+        {
+            var allowEnable = false;
+
+            foreach (ComputerModel computer in computers)
+            {
+                if (!(await computer.IsRunning()))
+                {
+                    allowEnable = true;
+                    continue;
+                }
+                allowEnable = false;
+            }
+
+            return allowEnable;
+        }
+
+        private void WireUpListView()
+        {
+            foreach (ComputerModel computer in computers)
+            {
+                var lvi = new ListViewItem()
+                {
+                    Text = computer.Name,
+                    ImageIndex = 0,
+                };
+
+                computerListView.Items.Add(lvi);
+            }
+            UpdateListViewComputers();
+        }
+
+        private void UpdateListViewComputers()
+        {
+            for (var i = 0; i < computers.Count; i++)
+            {
+                SetListViewComputerState(i);
+            }
+        }
+
+        private async void SetListViewComputerState(int itemInList)
+        {
+            if (await computers[itemInList].IsRunning())
+            {
+                computerListView.Items[itemInList].ImageIndex = 2;
+            }
+
+            computerListView.Items[itemInList].ImageIndex = 0;
+        }
+
+        private async void ChangeComputerState(ListViewItem selectedComputer)
+        {
+            int index = selectedComputer.Index;
+
+            selectedComputer.Selected = false;
+            selectedComputer.ImageIndex = 0;
+
+            if (await computers[index].IsRunning())
+            {
+                if (!computers[index].Shutdown())
+                {
+                    MessageBox.Show("Někde se vyskytla chyba. Nejspíše jsou špatně zadané přihlašovací údaje nebo doména.");
+                }
+            }
+            else
+            {
+                computers[index].Start();
+            }
+
+            SetListViewComputerState(index);
+        }
+
+        private void DisableMainButtons(bool disable = true)
+        {
+            startAll.Enabled = !disable;
+            stopAll.Enabled = !disable;
+            computerListView.Enabled = !disable;
+        }
+
+        private void SetTimer()
+        {
+            Timer aTimer = new Timer
+            {
+                Interval = 30000,
+                Enabled = true
+            };
+            aTimer.Tick += (s, e) => UpdateListViewComputers();
+        }
     }
 }

@@ -50,7 +50,7 @@ namespace ControlLibrary.DataAccess.TextHelpers
 
             foreach (ComputerModel c in models)
             {
-                lines.Add($"{ c.Id },{c.Name},{ c.Domain },{ c.MacAddress }");
+                lines.Add($"{ c.Id },{c.Name},{ c.Hostname },{ c.MacAddress.Address }");
             }
 
             File.WriteAllLines(fileName.FullFilePath(), lines);
