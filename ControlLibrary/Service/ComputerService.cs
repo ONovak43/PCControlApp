@@ -3,11 +3,10 @@ using System;
 using System.Configuration;
 using System.Management;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace ControlLibrary.Service
 {
-    internal class ComputerService: IComputerService
+    internal class ComputerService : IComputerService
     {
         /// <summary>
         /// Represents the hostname for this particular computer.
@@ -18,12 +17,12 @@ namespace ControlLibrary.Service
         /// Represents the MAC address for this particular computer.
         /// </summary>
         public MacAddress MacAddress { get; }
-        
+
         /// <summary>
         /// Value thats set on true for - - after computer starts.
         /// </summary>
         public bool IsStarting = false;
-        
+
         public ComputerService(string hostname, MacAddress macAddress)
         {
             Hostname = hostname;
@@ -68,7 +67,7 @@ namespace ControlLibrary.Service
 
             SelectQuery query = new SelectQuery("Win32_OperatingSystem");
             ManagementObjectSearcher searcher = new ManagementObjectSearcher(scope, query);
-            
+
             foreach (ManagementObject os in searcher.Get())
             {
                 // Obtain in-parameters for the method

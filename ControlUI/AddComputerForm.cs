@@ -36,7 +36,7 @@ namespace ControlUI
 
                 nameInput.Text = "";
                 hostInput.Text = "";
-                macAddressInput.Text = "";                
+                macAddressInput.Text = "";
 
                 WireUpLists();
             }
@@ -52,7 +52,7 @@ namespace ControlUI
             {
                 MacAddress macAddress = new MacAddress(macAddressInput.Text);
             }
-            catch(ArgumentException)
+            catch (ArgumentException)
             {
                 return false;
             }
@@ -82,7 +82,7 @@ namespace ControlUI
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
             ComputerModel c = (ComputerModel)computersListBox.Items[_selectedContextMenuItem];
-     
+
             Clipboard.SetText(c.ComputerName);
         }
 
@@ -91,7 +91,7 @@ namespace ControlUI
             if (e.Button == MouseButtons.Right && computersListBox.IndexFromPoint(e.Location) != ListBox.NoMatches)
             {
                 _selectedContextMenuItem = computersListBox.IndexFromPoint(e.Location);
-                computerContextMenu.Show(Cursor.Position);                
+                computerContextMenu.Show(Cursor.Position);
             }
         }
     }

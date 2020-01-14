@@ -1,8 +1,5 @@
 ﻿using ControlLibrary.Service;
 using ControlLibrary.Wrapper;
-using System;
-using System.Configuration;
-using System.Management;
 using System.Threading.Tasks;
 
 namespace ControlLibrary

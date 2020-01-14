@@ -1,6 +1,7 @@
 ﻿using ControlLibrary;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -18,9 +19,9 @@ namespace ControlUI
         {
             InitializeComponent();
 
-            computerIcon.Images.Add(Image.FromFile("C:\\Users\\onova\\source\\repos\\PCControlApp\\icon.png"));
-            computerIcon.Images.Add(Image.FromFile("C:\\Users\\onova\\source\\repos\\PCControlApp\\icon2.png"));
-            computerIcon.Images.Add(Image.FromFile("C:\\Users\\onova\\source\\repos\\PCControlApp\\icon3.png"));
+            computerIcon.Images.Add(Image.FromFile($"{ConfigurationManager.AppSettings["filePath"]}\\icon.png"));
+            computerIcon.Images.Add(Image.FromFile($"{ConfigurationManager.AppSettings["filePath"]}\\icon2.png"));
+            computerIcon.Images.Add(Image.FromFile($"{ConfigurationManager.AppSettings["filePath"]}\\icon3.png"));
 
             WireUpListView();
             SetTimer();
@@ -73,7 +74,7 @@ namespace ControlUI
 
             foreach (ComputerModel computer in computers)
             {
-                if(!computer.Shutdown())
+                if (!computer.Shutdown())
                 {
                     MessageBox.Show("Někde se vyskytla chyba. Nejspíše jsou špatně zadané přihlašovací údaje nebo host.");
                 }
@@ -90,7 +91,7 @@ namespace ControlUI
                 {
                     break;
                 }
-                await Task.Delay(1000);
+                await Task.Delay(250);
             }
 
             DisableMainButtons(false);
@@ -183,6 +184,12 @@ namespace ControlUI
                 Enabled = true
             };
             aTimer.Tick += (s, e) => UpdateListViewComputers();
+        }
+
+        private void ComputerViewForm_Shown(object sender, EventArgs e)
+        {
+            MessageBox.Show("asdasd");
+
         }
     }
 }

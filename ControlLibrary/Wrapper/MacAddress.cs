@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Text.RegularExpressions;
-using System.Windows.Forms;
 
 namespace ControlLibrary.Wrapper
 {
@@ -10,7 +9,7 @@ namespace ControlLibrary.Wrapper
 
         public MacAddress(string macAddress)
         {
-            if(!IsMacAddress(macAddress))
+            if (!IsMacAddress(macAddress))
             {
                 throw new ArgumentException(message: "Invalid argument", paramName: nameof(macAddress));
             }
