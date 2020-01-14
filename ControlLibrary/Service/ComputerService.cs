@@ -6,29 +6,42 @@ using System.Threading.Tasks;
 
 namespace ControlLibrary.Service
 {
+    /// <summary>
+    /// Poskytuje metody pro odesílání signálů do konkrétního počítače.
+    /// </summary>
     internal class ComputerService : IComputerService
     {
         /// <summary>
-        /// Represents the hostname for this particular computer.
+        /// Představuje hostname (adresu) konkrétního počítače.
         /// </summary>
         public string Hostname { get; }
 
         /// <summary>
-        /// Represents the MAC address for this particular computer.
+        /// Představuje MAC adresu konrétního počítače.
         /// </summary>
         public MacAddress MacAddress { get; }
 
         /// <summary>
-        /// Value thats set on true for - - after computer starts.
+        /// Slouží k identikaci stavu počítače. Její hodnota je nastavena na true po dobu 60 sekund 
+        ///    od startu počítače.
         /// </summary>
         public bool IsStarting = false;
 
+        /// <summary>
+        /// Inicializuje novou instanci třídy ControlLibrary.Service.ComputerModel reprezentující 
+        ///     služby k ovládání počítače a získání informací o jeho stavu.
+        /// </summary>
+        /// <param name="hostname">Hostname konkrétního počítače.</param>
+        /// <param name="macAddress">MAC adresa konkrétního počítače.</param>
         public ComputerService(string hostname, MacAddress macAddress)
         {
             Hostname = hostname;
             MacAddress = macAddress;
         }
 
+        /// <summary>
+        /// Spustí počítač.
+        /// </summary>
         public async void Start()
         {
             if (IsStarting || await IsRunning())
@@ -41,6 +54,11 @@ namespace ControlLibrary.Service
             StopStarting();
         }
 
+        /// <summary>
+        /// Vypne počítač.
+        /// </summary>
+        /// <returns>Vrátí true v případě, že byl signál k vypnutí počítače úspěšně odeslán.
+        ///     Vrátí false pokud odeslání signálu selhalo.</returns>
         public bool Shutdown()
         {
             ConnectionOptions options = new ConnectionOptions
@@ -56,7 +74,7 @@ namespace ControlLibrary.Service
             {
                 scope.Connect();
             }
-            catch (UnauthorizedAccessException)
+            catch (UnauthorizedAccessException) // Pokud jsou zadané chybné údaje (options)
             {
                 return false;
             }
@@ -70,25 +88,33 @@ namespace ControlLibrary.Service
 
             foreach (ManagementObject os in searcher.Get())
             {
-                // Obtain in-parameters for the method
+                // Získá parametry pro metodu.
                 ManagementBaseObject inParams =
                     os.GetMethodParameters("Win32Shutdown");
 
-                // Add the input parameters.
+                // Přidá vstupní parametry.
                 inParams["Flags"] = 1;
 
-                // Execute the method.
+                // Spustí metodu.
                 os.InvokeMethod("Win32Shutdown", inParams, null);
             }
 
             return true;
         }
-
+        
+        /// <summary>
+        /// Ověří, zda je počítač online.
+        /// </summary>
+        /// <returns>Vrátí true v případě, že je počítač online.  Vrátí false pokud je počítač offline.</returns>
         public async Task<bool> IsRunning()
         {
             return await Network.Ping(Hostname);
         }
 
+        /// <summary>
+        /// Metoda nastaví po 60 sekundách hodnotu property IsStarting na false. Instance třídy 
+        ///     tedy bude uvažovat, že počítač již nastartoval.
+        /// </summary>
         private async void StopStarting()
         {
             await Task.Delay(60000);

@@ -1,63 +1,64 @@
-﻿using ControlLibrary.Service;
+﻿using ControlLibrary.Factory;
+using ControlLibrary.Service;
 using ControlLibrary.Wrapper;
 using System.Threading.Tasks;
 
 namespace ControlLibrary
 {
     /// <summary>
-    /// Represents computer.
+    /// Představuje počítač a poskytuje metody k jeho ovládání.
     /// </summary>
     public class ComputerModel
     {
         /// <summary>
-        /// The unique identifier for the computer.
+        /// Unikátní identifikační kód počítače.
         /// </summary>
         public int Id { get; set; }
 
         /// <summary>
-        /// Represents the name for this particular computer.
+        /// Představuje název konkrétního počítače.
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
-        /// Represents the hostname for this particular computer.
+        /// Představuje hostname (adresu) konkrétního počítače.
         /// </summary>
         public string Hostname { get; }
 
         /// <summary>
-        /// Represents the MAC address for this particular computer.
+        /// Představuje MAC adresu konrétního počítače.
         /// </summary>
         public MacAddress MacAddress { get; }
 
         /// <summary>
-        /// Represents formatted computer's name, Hostname and mac address. It's used to display info about particular computer.
+        /// Představuje zformátovaný název počítače, hostname a MAC adresu. Slouží k 
+        ///     zobrazení dat konkrétního počítače.
         /// </summary>
         public string ComputerName { get; }
 
         /// <summary>
-        /// ComputerService to control particular computer.
+        /// ComputerService obsahuje metody k ovládání počítače
         /// </summary>
         private readonly IComputerService ComputerService;
 
         /// <summary>
-        ///  Initializes a new instance of the ControlLibrary.ComputerModel class representing 
-        ///    the specified computer, with the specified options.
+        ///  Inicializuje novou instanci třídy ControlLibrary.ComputerModel reprezentující 
+        ///    konkrétní počítač.
         /// </summary>
-        /// <param name="computerService">Initialized ComputerService with Hostname and MAC address</param>
-        /// <param name="name">Name of this particular computer</param>
-        /// <param name="hostname">Hostname of this particular computer</param>
-        /// <param name="macAddress">MAC address of this particular computer</param>
-        public ComputerModel(IComputerService computerService, string name, string hostname, MacAddress macAddress)
+        /// <param name="name">Název počítače.</param>
+        /// <param name="hostname">Hostname (adresa) počítače.</param>
+        /// <param name="macAddress">MAC adresa počítače.</param>
+        public ComputerModel(string name, string hostname, MacAddress macAddress)
         {
             Name = name;
-            ComputerService = computerService;
             Hostname = hostname;
             MacAddress = macAddress;
-            ComputerName = $"{ Name }: { Hostname }, { macAddress.Address }";
+            ComputerService = ComputerServiceFactory.GetComputerService(Hostname, MacAddress);
+            ComputerName = $"{ Name }: { Hostname }, { MacAddress.Address }";
         }
 
         /// <summary>
-        /// Start the specified computer. 
+        /// Zapne konkrétní počítač
         /// </summary>
         public void Start()
         {
@@ -65,18 +66,19 @@ namespace ControlLibrary
         }
 
         /// <summary>
-        /// Shutdown the specified computer.
+        /// Vypne konkrétní počítač.
         /// </summary>
-        /// <returns>True if signal to shutdown computer was sent sucessfully. False if it failed.</returns>
+        /// <returns>Vrátí true v případě, že byl signál k vypnutí počítače úspěšně odeslán.
+        ///     Vrátí false pokud odeslání signálu selhalo.</returns>
         public bool Shutdown()
         {
             return ComputerService.Shutdown();
         }
 
         /// <summary>
-        /// Check if computer is online.
+        /// Ověří, zda je počítač online.
         /// </summary>
-        /// <returns>True if computer is online. False if it's not.</returns>
+        /// <returns>Vrátí true v případě, že je počítač online.  Vrátí false pokud je počítač offline.</returns>
         public async Task<bool> IsRunning()
         {
             return await ComputerService.IsRunning();

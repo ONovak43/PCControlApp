@@ -15,15 +15,14 @@ namespace ControlUI
         /// </summary>
         private List<ComputerModel> computers = GlobalConfig.Connections.GetComputers_All();
 
+        /// <summary>
+        /// 
+        /// </summary>
         public ComputerViewForm()
         {
             InitializeComponent();
-
-            computerIcon.Images.Add(Image.FromFile($"{ConfigurationManager.AppSettings["filePath"]}\\icon.png"));
-            computerIcon.Images.Add(Image.FromFile($"{ConfigurationManager.AppSettings["filePath"]}\\icon2.png"));
-            computerIcon.Images.Add(Image.FromFile($"{ConfigurationManager.AppSettings["filePath"]}\\icon3.png"));
-
             WireUpListView();
+            WireUpImageList();
             SetTimer();
         }
 
@@ -123,10 +122,17 @@ namespace ControlUI
                     Text = computer.Name,
                     ImageIndex = 0,
                 };
-
+                
                 computerListView.Items.Add(lvi);
             }
             UpdateListViewComputers();
+        }
+
+        private void WireUpImageList()
+        {
+            string path = System.AppDomain.CurrentDomain.BaseDirectory;
+            computerIcon.Images.Add(Image.FromFile($"{ path }\\res\\icon_offline.png"));
+            computerIcon.Images.Add(Image.FromFile($"{ path }\\res\\icon_online.png"));
         }
 
         private void UpdateListViewComputers()
@@ -184,12 +190,6 @@ namespace ControlUI
                 Enabled = true
             };
             aTimer.Tick += (s, e) => UpdateListViewComputers();
-        }
-
-        private void ComputerViewForm_Shown(object sender, EventArgs e)
-        {
-            MessageBox.Show("asdasd");
-
         }
     }
 }

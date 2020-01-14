@@ -116,7 +116,6 @@
             this.MaximizeBox = false;
             this.Name = "ComputerViewForm";
             this.Text = "Ovládání počítačů v učebně";
-            this.Shown += new System.EventHandler(this.ComputerViewForm_Shown);
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -7,10 +7,15 @@ namespace ControlLibrary.DataAccess
     public class TextConnector : IDataConnection
     {
         /// <summary>
-        /// Represents "database" of computers.
+        /// Reprezentuje databázi počítačů.
         /// </summary>
         private const string ComputersFile = "ComputerModel.csv";
 
+        /// <summary>
+        /// Přidá počítač do databáze.
+        /// </summary>
+        /// <param name="model">Počítač</param>
+        /// <returns>Počítač včetně jeho id v databázi.</returns>
         public ComputerModel AddComputer(ComputerModel model)
         {
             List<ComputerModel> computers = ComputersFile.FullFilePath().LoadFile().ConvertToComputerModels();
@@ -31,6 +36,10 @@ namespace ControlLibrary.DataAccess
             return model;
         }
 
+        /// <summary>
+        /// Odstraní počítač z databáze.
+        /// </summary>
+        /// <param name="model">Počítač k odstranění.</param>
         public void RemoveComputer(ComputerModel model)
         {
             List<ComputerModel> computers = ComputersFile.FullFilePath().LoadFile().ConvertToComputerModels();
@@ -40,6 +49,10 @@ namespace ControlLibrary.DataAccess
             computers.SaveToComputerFile(ComputersFile);
         }
 
+        /// <summary>
+        /// Vrátí všechny počíateče z databáze.
+        /// </summary>
+        /// <returns>Počítače z databáze převedené do ComputerModelů.</returns>
         public List<ComputerModel> GetComputers_All()
         {
             return ComputersFile.FullFilePath().LoadFile().ConvertToComputerModels();
