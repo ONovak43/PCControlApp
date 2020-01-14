@@ -9,9 +9,12 @@ namespace ControlLibrary
         /// </summary>
         public static IDataConnection Connections { get; private set; }
 
-        public static void InitializeConnections() // V této metodě lze nastavit typ připojení (resp. úložiště)
+        /// <summary>
+        /// Incilaizuje připojení k datovému úložišti.
+        /// </summary>
+        public static void InitializeConnections()
         {
-            TextConnector text = new TextConnector();
+            TextConnector text = new TextConnector(); // Zde lze nastavit typ připojení (resp. úložiště).
             Connections = text;
         }
     }

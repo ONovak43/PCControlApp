@@ -1,6 +1,4 @@
 ﻿using ControlLibrary;
-using ControlLibrary.Factory;
-using ControlLibrary.Service;
 using ControlLibrary.Wrapper;
 using System;
 using System.Windows.Forms;
@@ -15,12 +13,6 @@ namespace ControlUI
         {
             InitializeComponent();
             WireUpLists();
-        }
-
-        private void WireUpLists()
-        {
-            computersListBox.DataSource = GlobalConfig.Connections.GetComputers_All();
-            computersListBox.DisplayMember = "ComputerName";
         }
 
         private void addComputerButton_Click(object sender, EventArgs e)
@@ -41,27 +33,8 @@ namespace ControlUI
             }
             else
             {
-                MessageBox.Show("Musíš vyplnit všechna pole a zadat MAC adresu ve správném tvaru.");
+                MessageBox.Show("Zkontroluj, zda si vyplnil všechna pole, zadal MAC adresu ve správném tvaru a nepoužil v žádném vstupu čárku (,).");
             }
-        }
-
-        private bool ValidateForm()
-        {
-            try
-            {
-                MacAddress macAddress = new MacAddress(macAddressInput.Text);
-            }
-            catch (ArgumentException)
-            {
-                return false;
-            }
-
-            if (nameInput.Text.Length == 0 || hostInput.Text.Length == 0)
-            {
-                return false;
-            }
-
-            return true;
         }
 
         private void removeComputer_Click(object sender, EventArgs e)
@@ -92,6 +65,31 @@ namespace ControlUI
                 _selectedContextMenuItem = computersListBox.IndexFromPoint(e.Location);
                 computerContextMenu.Show(Cursor.Position);
             }
+        }
+
+        private void WireUpLists()
+        {
+            computersListBox.DataSource = GlobalConfig.Connections.GetComputers_All();
+            computersListBox.DisplayMember = "ComputerName";
+        }
+
+        private bool ValidateForm()
+        {
+            try
+            {
+                MacAddress macAddress = new MacAddress(macAddressInput.Text);
+            }
+            catch (ArgumentException)
+            {
+                return false;
+            }
+
+            if (nameInput.Text.Length == 0 || hostInput.Text.Length == 0 || nameInput.Text.Contains(",") || hostInput.Text.Contains(","))
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }

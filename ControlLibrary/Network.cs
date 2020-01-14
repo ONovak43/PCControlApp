@@ -11,6 +11,13 @@ namespace ControlLibrary
 {
     internal static class Network
     {
+        /// <summary>
+        /// Vyšle signál WakeOnLan.
+        /// </summary>
+        /// <param name="macAddress">MAC adresa zařízení.</param>
+        /// <param name="ip">IP adresa</param>
+        /// <param name="port">UDP port</param>
+        /// <returns></returns>
         public static async Task WakeOnLan(MacAddress macAddress, string ip = "255.255.255.255", int port = 7)
         {
             byte[] magicPacket = BuildMagicPacket(macAddress);
@@ -23,31 +30,12 @@ namespace ControlLibrary
 
         }
 
-        public static async Task<bool> Ping(string hostname)
-        {
-            var timeout = 1000;
-
-            using (Ping ping = new Ping())
-            {
-                try
-                {
-                    PingReply pingreply = await ping.SendPingAsync(hostname, timeout);
-
-                    if (pingreply.Status == IPStatus.Success)
-                    {
-                        return true;
-                    }
-                }
-                catch (PingException)
-                {
-                    return false;
-                }
-            }
-
-            return false;
-        }
-
-        private static byte[] BuildMagicPacket(MacAddress macAddress) // MacAddress in any standard HEX format.
+        /// <summary>
+        /// Vyvtoří magic packet k probuzení počítače.
+        /// </summary>
+        /// <param name="macAddress">MAC adresa zařízení.</param>
+        /// <returns>Magic packet.</returns>
+        private static byte[] BuildMagicPacket(MacAddress macAddress)
         {
             var address = Regex.Replace(macAddress.Address, "[: -]", "");
             var macBytes = new byte[6];
@@ -72,6 +60,35 @@ namespace ControlLibrary
                 }
                 return ms.ToArray(); // 102 bytes magic packet.
             }
+        }
+
+        /// <summary>
+        /// Asynchronně "pinguje" počítač.
+        /// </summary>
+        /// <param name="hostname">Adresa počítače</param>
+        /// <returns>Stav počítače (true – online, false – offline).</returns>
+        public static async Task<bool> Ping(string hostname)
+        {
+            var timeout = 1000;
+
+            using (Ping ping = new Ping())
+            {
+                try
+                {
+                    PingReply pingreply = await ping.SendPingAsync(hostname, timeout);
+
+                    if (pingreply.Status == IPStatus.Success)
+                    {
+                        return true;
+                    }
+                }
+                catch (PingException)
+                {
+                    return false;
+                }
+            }
+
+            return false;
         }
 
     }

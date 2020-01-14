@@ -101,7 +101,7 @@ namespace ControlLibrary.Service
 
             return true;
         }
-        
+
         /// <summary>
         /// Ověří, zda je počítač online.
         /// </summary>

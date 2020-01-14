@@ -1,7 +1,6 @@
 ﻿using ControlLibrary;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -11,13 +10,10 @@ namespace ControlUI
     public partial class ComputerViewForm : Form
     {
         /// <summary>
-        /// The set of computers.
+        /// Seznam počítačů.
         /// </summary>
         private List<ComputerModel> computers = GlobalConfig.Connections.GetComputers_All();
 
-        /// <summary>
-        /// 
-        /// </summary>
         public ComputerViewForm()
         {
             InitializeComponent();
@@ -122,7 +118,7 @@ namespace ControlUI
                     Text = computer.Name,
                     ImageIndex = 0,
                 };
-                
+
                 computerListView.Items.Add(lvi);
             }
             UpdateListViewComputers();
