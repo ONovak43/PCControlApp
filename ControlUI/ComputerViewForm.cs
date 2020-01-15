@@ -22,21 +22,21 @@ namespace ControlUI
             SetTimer();
         }
 
-        private void computerList_DoubleClick(object sender, EventArgs e)
+        private async void computerList_DoubleClick(object sender, EventArgs e)
         {
             if (sender is ListView item)
             {
                 ListViewItem selectedItem = item.SelectedItems[0];
-                ChangeComputerState(selectedItem);
+                await ChangeComputerStateAsync(selectedItem);
             }
         }
 
-        private void computerList_KeyDown(object sender, KeyEventArgs e)
+        private async void computerList_KeyDown(object sender, KeyEventArgs e)
         {
             if (sender is ListView item && e.KeyCode == Keys.Enter)
             {
                 ListViewItem selectedItem = item.SelectedItems[0];
-                ChangeComputerState(selectedItem);
+                await ChangeComputerStateAsync(selectedItem);
             }
         }
 
@@ -51,7 +51,7 @@ namespace ControlUI
             WireUpListView();
         }
 
-        private void startAll_Click(object sender, EventArgs e)
+        private async void startAll_Click(object sender, EventArgs e)
         {
             DisableMainButtons();
 
@@ -60,10 +60,10 @@ namespace ControlUI
                 computer.Start();
             }
 
-            EnableButtons(false);
+            await EnableButtonsAsync(false);
         }
 
-        private void stopAll_Click(object sender, EventArgs e)
+        private async void stopAll_Click(object sender, EventArgs e)
         {
             DisableMainButtons();
 
@@ -75,14 +75,14 @@ namespace ControlUI
                 }
             }
 
-            EnableButtons(false);
+            await EnableButtonsAsync(false);
         }
 
-        private async Task EnableButtons(bool computerStarting)
+        private async Task EnableButtonsAsync(bool computerStarting)
         {
             for (var i = 0; i < 15; i++)
             {
-                if ((await CheckComputersState()) == computerStarting)
+                if ((await CheckComputersStateAsync()) == computerStarting)
                 {
                     break;
                 }
@@ -92,7 +92,7 @@ namespace ControlUI
             DisableMainButtons(false);
         }
 
-        private async Task<bool> CheckComputersState()
+        private async Task<bool> CheckComputersStateAsync()
         {
             var allowEnable = false;
 
@@ -121,7 +121,7 @@ namespace ControlUI
 
                 computerListView.Items.Add(lvi);
             }
-            UpdateListViewComputers();
+            Task.Run(() => UpdateListViewComputersAsync().Wait());
         }
 
         private void WireUpImageList()
@@ -131,15 +131,15 @@ namespace ControlUI
             computerIcon.Images.Add(Image.FromFile($"{ path }\\res\\icon_online.png"));
         }
 
-        private void UpdateListViewComputers()
+        private async Task UpdateListViewComputersAsync()
         {
             for (var i = 0; i < computers.Count; i++)
             {
-                SetListViewComputerState(i);
+                await SetListViewComputerStateAsync(i);
             }
         }
 
-        private async Task SetListViewComputerState(int itemInList)
+        private async Task SetListViewComputerStateAsync(int itemInList)
         {
             if (await computers[itemInList].IsRunning())
             {
@@ -149,7 +149,7 @@ namespace ControlUI
             computerListView.Items[itemInList].ImageIndex = 0;
         }
 
-        private async Task ChangeComputerState(ListViewItem selectedComputer)
+        private async Task ChangeComputerStateAsync(ListViewItem selectedComputer)
         {
             int index = selectedComputer.Index;
 
@@ -168,7 +168,7 @@ namespace ControlUI
                 computers[index].Start();
             }
 
-            SetListViewComputerState(index);
+            await SetListViewComputerStateAsync(index);
         }
 
         private void DisableMainButtons(bool disable = true)
@@ -185,7 +185,7 @@ namespace ControlUI
                 Interval = 30000,
                 Enabled = true
             };
-            aTimer.Tick += (s, e) => UpdateListViewComputers();
+            aTimer.Tick += (s, e) => Task.Run(() => UpdateListViewComputersAsync());
         }
     }
 }
