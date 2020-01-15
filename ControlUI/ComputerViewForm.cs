@@ -78,7 +78,7 @@ namespace ControlUI
             EnableButtons(false);
         }
 
-        private async void EnableButtons(bool computerStarting)
+        private async Task EnableButtons(bool computerStarting)
         {
             for (var i = 0; i < 15; i++)
             {
@@ -139,7 +139,7 @@ namespace ControlUI
             }
         }
 
-        private async void SetListViewComputerState(int itemInList)
+        private async Task SetListViewComputerState(int itemInList)
         {
             if (await computers[itemInList].IsRunning())
             {
@@ -149,7 +149,7 @@ namespace ControlUI
             computerListView.Items[itemInList].ImageIndex = 0;
         }
 
-        private async void ChangeComputerState(ListViewItem selectedComputer)
+        private async Task ChangeComputerState(ListViewItem selectedComputer)
         {
             int index = selectedComputer.Index;
 
