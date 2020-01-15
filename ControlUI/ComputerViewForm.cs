@@ -121,7 +121,7 @@ namespace ControlUI
 
                 computerListView.Items.Add(lvi);
             }
-            Task.Run(() => UpdateListViewComputersAsync());
+            Task.Run(() => UpdateListViewComputersAsync().Wait());
         }
 
         private void WireUpImageList()
@@ -185,7 +185,7 @@ namespace ControlUI
                 Interval = 30000,
                 Enabled = true
             };
-            aTimer.Tick += (s, e) => Task.Run(() => UpdateListViewComputersAsync());
+            aTimer.Tick += (s, e) => Task.Run(() => UpdateListViewComputersAsync().Wait());
         }
     }
 }
