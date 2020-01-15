@@ -121,7 +121,7 @@ namespace ControlUI
 
                 computerListView.Items.Add(lvi);
             }
-            Task.Run(() => UpdateListViewComputersAsync().Wait());
+            Task.Run(() => UpdateListViewComputersAsync());
         }
 
         private void WireUpImageList()

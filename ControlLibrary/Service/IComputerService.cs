@@ -4,7 +4,7 @@ namespace ControlLibrary.Service
 {
     public interface IComputerService
     {
-        void Start();
+        Task Start();
 
         bool Shutdown();
 

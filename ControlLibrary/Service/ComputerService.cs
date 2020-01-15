@@ -42,7 +42,7 @@ namespace ControlLibrary.Service
         /// <summary>
         /// Spustí počítač.
         /// </summary>
-        public async void Start()
+        public async Task Start()
         {
             if (IsStarting || await IsRunning())
             {
@@ -51,7 +51,7 @@ namespace ControlLibrary.Service
 
             await Network.WakeOnLan(MacAddress);
             IsStarting = true;
-            StopStarting();
+            await StopStarting();
         }
 
         /// <summary>
@@ -115,7 +115,7 @@ namespace ControlLibrary.Service
         /// Metoda nastaví po 60 sekundách hodnotu property IsStarting na false. Instance třídy 
         ///     tedy bude uvažovat, že počítač již nastartoval.
         /// </summary>
-        private async void StopStarting()
+        private async Task StopStarting()
         {
             await Task.Delay(60000);
             IsStarting = false;
