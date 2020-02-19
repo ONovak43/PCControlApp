@@ -2,6 +2,7 @@
 using ControlLibrary.Service;
 using ControlLibrary.Wrapper;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace ControlLibrary
 {
@@ -72,6 +73,7 @@ namespace ControlLibrary
         ///     Vrátí false pokud odeslání signálu selhalo.</returns>
         public bool Shutdown()
         {
+            MessageBox.Show("asd");
             return ComputerService.Shutdown();
         }
 

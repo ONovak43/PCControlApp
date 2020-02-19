@@ -3,6 +3,7 @@ using System;
 using System.Configuration;
 using System.Management;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace ControlLibrary.Service
 {
@@ -54,12 +55,63 @@ namespace ControlLibrary.Service
             await StopStarting();
         }
 
+        public bool Shutdown()
+        {            
+            try
+            {
+                ConnectionOptions options = new ConnectionOptions
+                {
+                    Impersonation = ImpersonationLevel.Impersonate,
+                    EnablePrivileges = true
+                };
+
+                //local machine
+                ManagementScope scope = null;
+                if (Hostname.ToUpper() == Environment.MachineName.ToUpper())
+                {
+                    scope = new ManagementScope(@"\ROOT\CIMV2", options);
+                }
+                else
+                {
+                    //remote machine
+                    options.Username = ConfigurationManager.AppSettings["userName"];
+                    options.Password = ConfigurationManager.AppSettings["userPassword"];
+                    scope = new ManagementScope(@"\\" + Hostname + @"\ROOT\CIMV2", options);
+                }
+
+                scope.Connect();
+
+                ObjectQuery objQuery = new ObjectQuery("SELECT * FROM Win32_OperatingSystem");
+
+                ManagementObjectSearcher objSearcher = new ManagementObjectSearcher(scope, objQuery);
+                foreach (ManagementObject operatingSystem in objSearcher.Get())
+                {
+
+                    //Shutdown
+
+                    // ManagementBaseObject outParams = operatingSystem.InvokeMethod("Start", null, null);
+
+                    ManagementBaseObject outParams = operatingSystem.InvokeMethod("Shutdown", null, null);
+
+                }
+
+            }
+
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error : " + ex.Message);
+            }
+            
+            return true;
+        }
+
+
         /// <summary>
         /// Vypne počítač.
         /// </summary>
         /// <returns>Vrátí true v případě, že byl signál k vypnutí počítače úspěšně odeslán.
         ///     Vrátí false pokud odeslání signálu selhalo.</returns>
-        public bool Shutdown()
+       /* public bool Shutdown()
         {
             ConnectionOptions options = new ConnectionOptions
             {
@@ -70,18 +122,18 @@ namespace ControlLibrary.Service
 
             ManagementScope scope = new ManagementScope($"\\\\{ Hostname }\\root\\cimv2", options);
 
-            try
-            {
+          //  try
+          //  {
                 scope.Connect();
-            }
-            catch (UnauthorizedAccessException) // Pokud jsou zadané chybné údaje (options)
-            {
-                return false;
-            }
-            catch (ArgumentException)
-            {
-                return false;
-            }
+           // }
+           // catch (UnauthorizedAccessException) // Pokud jsou zadané chybné údaje (options)
+           // {
+          //      return false;
+          //  }
+          //  catch (ArgumentException)
+         //   {
+          //      return false;
+          //  }
 
             SelectQuery query = new SelectQuery("Win32_OperatingSystem");
             ManagementObjectSearcher searcher = new ManagementObjectSearcher(scope, query);
@@ -100,7 +152,7 @@ namespace ControlLibrary.Service
             }
 
             return true;
-        }
+        }*/
 
         /// <summary>
         /// Ověří, zda je počítač online.

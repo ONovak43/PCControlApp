@@ -13,6 +13,7 @@ namespace ControlUI
         /// Seznam počítačů.
         /// </summary>
         private List<ComputerModel> computers = GlobalConfig.Connections.GetComputers_All();
+        delegate void SetListViewCallback(int itemIntList, int num);
 
         public ComputerViewForm()
         {
@@ -143,11 +144,29 @@ namespace ControlUI
         {
             if (await computers[itemInList].IsRunning())
             {
-                computerListView.Items[itemInList].ImageIndex = 2;
+                SetImage(itemInList, 1);
+            }
+            else
+            {
+                SetImage(itemInList, 0);
+            }
+                  
+        }
+
+        private void SetImage(int itemInList, int imgId)
+        {
+            if (computerListView.InvokeRequired)
+            {
+                    SetListViewCallback d = new SetListViewCallback(SetImage);
+                    this.Invoke(d, new object[] { itemInList, imgId });
+            }
+            else
+            {
+                computerListView.Items[itemInList].ImageIndex = imgId;
             }
 
-            computerListView.Items[itemInList].ImageIndex = 0;
         }
+
 
         private async Task ChangeComputerStateAsync(ListViewItem selectedComputer)
         {
@@ -187,5 +206,6 @@ namespace ControlUI
             };
             aTimer.Tick += (s, e) => Task.Run(() => UpdateListViewComputersAsync().Wait());
         }
+
     }
 }

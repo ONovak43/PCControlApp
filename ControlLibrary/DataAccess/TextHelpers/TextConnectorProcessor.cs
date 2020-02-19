@@ -18,7 +18,8 @@ namespace ControlLibrary.DataAccess.TextHelpers
         /// <returns>Cesta k požadovanému souboru.</returns>
         public static string FullFilePath(this string fileName)
         {
-            return $"{ ConfigurationManager.AppSettings["filePath"] }\\{ fileName }";
+           // return $"{ ConfigurationManager.AppSettings["filePath"] }\\{ fileName }";
+            return $"{ fileName }";
         }
 
         /// <summary>
