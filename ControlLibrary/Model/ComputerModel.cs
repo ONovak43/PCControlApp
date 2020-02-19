@@ -73,7 +73,6 @@ namespace ControlLibrary
         ///     Vrátí false pokud odeslání signálu selhalo.</returns>
         public bool Shutdown()
         {
-            MessageBox.Show("asd");
             return ComputerService.Shutdown();
         }
 

@@ -149,34 +149,29 @@ namespace ControlUI
             else
             {
                 SetImage(itemInList, 0);
-            }
-                  
+            }                  
         }
 
         private void SetImage(int itemInList, int imgId)
         {
             if (computerListView.InvokeRequired)
             {
-                    SetListViewCallback d = new SetListViewCallback(SetImage);
-                    this.Invoke(d, new object[] { itemInList, imgId });
+                SetListViewCallback d = new SetListViewCallback(SetImage);
+                Invoke(d, new object[] { itemInList, imgId });
+                return;
             }
-            else
-            {
-                computerListView.Items[itemInList].ImageIndex = imgId;
-            }
-
+            computerListView.Items[itemInList].ImageIndex = imgId;
         }
-
 
         private async Task ChangeComputerStateAsync(ListViewItem selectedComputer)
         {
             int index = selectedComputer.Index;
 
             selectedComputer.Selected = false;
-            selectedComputer.ImageIndex = 0;
 
             if (await computers[index].IsRunning())
             {
+                selectedComputer.ImageIndex = 0;
                 if (!computers[index].Shutdown())
                 {
                     MessageBox.Show("Někde se vyskytla chyba. Nejspíše jsou špatně zadané přihlašovací údaje nebo doména.");
@@ -184,10 +179,9 @@ namespace ControlUI
             }
             else
             {
+                selectedComputer.ImageIndex = 1;
                 computers[index].Start();
             }
-
-            await SetListViewComputerStateAsync(index);
         }
 
         private void DisableMainButtons(bool disable = true)
@@ -201,7 +195,7 @@ namespace ControlUI
         {
             Timer aTimer = new Timer
             {
-                Interval = 30000,
+                Interval = 1000,
                 Enabled = true
             };
             aTimer.Tick += (s, e) => Task.Run(() => UpdateListViewComputersAsync().Wait());
