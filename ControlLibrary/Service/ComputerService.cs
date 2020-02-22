@@ -52,11 +52,8 @@ namespace ControlLibrary.Service
         /// </summary>
         /// <param name="hostname">Hostname konkrétního počítače.</param>
         /// <param name="macAddress">MAC adresa konkrétního počítače.</param>
-        public ComputerService(string hostname, MacAddress macAddress)
-        {
-            Hostname = hostname;
-            MacAddress = macAddress;
-        }
+        public ComputerService(string hostname, MacAddress macAddress) =>
+            (Hostname, MacAddress) = (hostname, macAddress);
 
         /// <summary>
         /// Spustí počítač.
@@ -68,7 +65,7 @@ namespace ControlLibrary.Service
                 return;
             }
 
-            await Network.WakeOnLan(MacAddress);
+            await Network.WakeOnLan(MacAddress, ConfigurationManager.AppSettings["subnetMask"]);
             IsStarting = true;
             Cache(true);
             await StopStarting();

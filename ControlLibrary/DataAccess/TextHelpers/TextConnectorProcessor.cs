@@ -1,6 +1,5 @@
 ﻿using ControlLibrary.Wrapper;
 using System.Collections.Generic;
-using System.Configuration;
 using System.IO;
 using System.Linq;
 
@@ -18,7 +17,7 @@ namespace ControlLibrary.DataAccess.TextHelpers
         /// <returns>Cesta k požadovanému souboru.</returns>
         public static string FullFilePath(this string fileName)
         {
-           // return $"{ ConfigurationManager.AppSettings["filePath"] }\\{ fileName }";
+            // return $"{ ConfigurationManager.AppSettings["filePath"] }\\{ fileName }";
             return $"{ fileName }";
         }
 

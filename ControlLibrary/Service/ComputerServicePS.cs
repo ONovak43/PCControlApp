@@ -53,9 +53,9 @@ namespace ControlLibrary.Service
         /// </summary>
         /// <param name="hostname">Hostname konkrétního počítače.</param>
         /// <param name="macAddress">MAC adresa konkrétního počítače.</param>
-        public ComputerServicePS(string hostname, MacAddress macAddress) =>        
+        public ComputerServicePS(string hostname, MacAddress macAddress) =>
             (Hostname, MacAddress) = (hostname, macAddress);
-        
+
 
         /// <summary>
         /// Spustí počítač.
@@ -79,7 +79,7 @@ namespace ControlLibrary.Service
         /// <returns>Vrátí true.</returns>
         public void Shutdown()
         {
-            if(IsShuttingDown)
+            if (IsShuttingDown)
             {
                 throw new ComputerServiceException("Tato stanice se již vypíná. ");
             }
@@ -129,13 +129,13 @@ namespace ControlLibrary.Service
         {
             DateTime now = DateTime.Now;
 
-            if((now - Cached).TotalSeconds < 10)
+            if ((now - Cached).TotalSeconds < 10)
             {
                 return IsOnline;
             }
 
             bool state = await Network.Ping(Hostname);
-            Cache(state);            
+            Cache(state);
             return IsOnline;
         }
 

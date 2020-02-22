@@ -3,7 +3,6 @@ using ControlLibrary.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Management;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -24,8 +23,6 @@ namespace ControlUI
             WireUpImageList();
             SetTimer();
         }
-
-
 
         private async void computerList_DoubleClick(object sender, EventArgs e)
         {
@@ -157,7 +154,7 @@ namespace ControlUI
             else
             {
                 SetImage(itemInList, 0);
-            }                  
+            }
         }
 
         private void SetImage(int itemInList, int imgId)
