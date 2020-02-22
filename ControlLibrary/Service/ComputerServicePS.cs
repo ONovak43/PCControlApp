@@ -2,7 +2,8 @@
 using ControlLibrary.Wrapper;
 using System;
 using System.Configuration;
-using System.Management;
+using System.Management.Automation;
+using System.Security;
 using System.Threading.Tasks;
 using System.Timers;
 
@@ -11,7 +12,7 @@ namespace ControlLibrary.Service
     /// <summary>
     /// Poskytuje metody pro odesílání signálů do konkrétního počítače.
     /// </summary>
-    internal class ComputerService : IComputerService
+    internal class ComputerServicePS : IComputerService
     {
         /// <summary>
         /// Představuje hostname (adresu) konkrétního počítače.
@@ -24,7 +25,7 @@ namespace ControlLibrary.Service
         public MacAddress MacAddress { get; }
 
         /// <summary>
-        /// Slouží k identikaci stavu počítače. Její hodnota je nastavena na true po dobu 60 sekund. 
+        /// Slouží k identikaci stavu počítače. Její hodnota je nastavena na true po dobu 60 sekund.
         ///    od startu počítače.
         /// </summary>
         private bool IsStarting = false;
@@ -36,12 +37,12 @@ namespace ControlLibrary.Service
         private bool IsShuttingDown = false;
 
         /// <summary>
-        /// Slouží jako "cache" po dobu 30 s se stavem stanice.
+        /// Slouží jako "cache" po dobu 30 s se stavem stanice
         /// </summary>
         private bool IsOnline = false;
 
         /// <summary>
-        /// Obsahuje čas, kdy byl do IsOnline nastaven stav počítače.
+        /// Obsahuje čas, kdy byl do IsOnline nastaven stav počítače
         /// </summary>
         private DateTime Cached = new DateTime(1970, 1, 1, 0, 0, 0);
 
@@ -52,11 +53,9 @@ namespace ControlLibrary.Service
         /// </summary>
         /// <param name="hostname">Hostname konkrétního počítače.</param>
         /// <param name="macAddress">MAC adresa konkrétního počítače.</param>
-        public ComputerService(string hostname, MacAddress macAddress)
-        {
-            Hostname = hostname;
-            MacAddress = macAddress;
-        }
+        public ComputerServicePS(string hostname, MacAddress macAddress) =>        
+            (Hostname, MacAddress) = (hostname, macAddress);
+        
 
         /// <summary>
         /// Spustí počítač.
@@ -77,64 +76,34 @@ namespace ControlLibrary.Service
         /// <summary>
         /// Vypne počítač.
         /// </summary>
-        /// <returns>Vrátí true v případě, že byl signál k vypnutí počítače úspěšně odeslán.
-        ///     Vrátí false pokud odeslání signálu selhalo.</returns>
+        /// <returns>Vrátí true.</returns>
         public void Shutdown()
         {
-            if (IsShuttingDown)
+            if(IsShuttingDown)
             {
-                throw new ComputerServiceException("Tato stanice se již vypíná.");
+                throw new ComputerServiceException("Tato stanice se již vypíná. ");
             }
 
-            try
+            SecureString securePwd = new SecureString();
+
+            var pwd = ConfigurationManager.AppSettings["userPassword"]; // Tohle není bezpečné. 
+
+            for (int x = 0; x < pwd.Length; x++)
             {
-                ManagementScope scope;
-                ConnectionOptions options = new ConnectionOptions
-                {
-                    EnablePrivileges = true
-                };                
-
-                if (Hostname.ToUpper() == Environment.MachineName.ToUpper()) // Lokální stanice.
-                {
-                    scope = new ManagementScope(@"\ROOT\CIMV2", options);
-                }
-                else //Stanice na síti.
-                {
-                    options.Username = ConfigurationManager.AppSettings["userName"];
-                    options.Password = ConfigurationManager.AppSettings["userPassword"];
-                    scope = new ManagementScope(@"\\" + Hostname + @"\ROOT\CIMV2", options);
-                }
-
-                scope.Connect();
-
-                ObjectQuery objQuery = new ObjectQuery("SELECT * FROM Win32_OperatingSystem");
-
-                ManagementObjectSearcher objSearcher = new ManagementObjectSearcher(scope, objQuery);
-
-                using (var coll = objSearcher.Get())
-                {
-                    foreach (ManagementObject operatingSystem in coll)
-                    {
-                        try
-                        {
-                            ManagementBaseObject outParams = operatingSystem.InvokeMethod("Shutdown", null, null);
-                        }
-                        finally
-                        {
-                            operatingSystem.Dispose();
-                        }
-                    }
-                }
-            }
-            catch (ManagementException ex)
-            {
-                throw new ComputerServiceException("Při spouštění WMI metody nastala chyba: " + ex.Message);
-            }
-            catch (UnauthorizedAccessException ex)
-            {
-                throw new ComputerServiceException("Při přihlášní se vyskytla chyba: " + ex.Message);
+                securePwd.AppendChar(pwd[x]);
             }
 
+            var cred = new PSCredential(ConfigurationManager.AppSettings["userName"], securePwd);
+            using (PowerShell ps = PowerShell.Create())
+            {
+                ps.AddCommand("Stop-Computer")
+                   .AddParameter("ComputerName", Hostname)
+                   .AddParameter("Force")
+                   .AddParameter("Credential", cred)
+                   .AddParameter("AsJob")
+                   .Invoke();
+                ps.Dispose();
+            }
             GC.Collect();
             Cache(false);
 
@@ -142,10 +111,9 @@ namespace ControlLibrary.Service
 
             Timer aTimer = new Timer
             {
-                Interval = 20000,
+                Interval = 30000,
                 Enabled = true
             };
-
             aTimer.Elapsed += (sender, args) =>
             {
                 IsShuttingDown = false;
@@ -161,7 +129,7 @@ namespace ControlLibrary.Service
         {
             DateTime now = DateTime.Now;
 
-            if((now - Cached).TotalSeconds < 5)
+            if((now - Cached).TotalSeconds < 10)
             {
                 return IsOnline;
             }
@@ -177,18 +145,15 @@ namespace ControlLibrary.Service
         /// </summary>
         private async Task StopStarting()
         {
-            await Task.Delay(60000);
+            await Task.Delay(20000);
             IsStarting = false;
         }
 
-        /// <summary>
-        /// Uloží stav počítače.
-        /// </summary>
-        /// <param name="state"></param>
         private void Cache(bool state)
         {
             IsOnline = state;
             Cached = DateTime.Now;
         }
+
     }
 }

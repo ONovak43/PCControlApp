@@ -16,7 +16,7 @@ namespace ControlLibrary.Factory
         /// <returns>Instanci třídy implementující IComputerService.</returns>
         public static IComputerService GetComputerService(string hostname, MacAddress macAddress)
         {
-            IComputerService computerService = new ComputerService(hostname, macAddress);
+            IComputerService computerService = new ComputerServicePS(hostname, macAddress);
             return computerService;
         }
     }

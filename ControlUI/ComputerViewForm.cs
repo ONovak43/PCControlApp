@@ -1,7 +1,9 @@
 ﻿using ControlLibrary;
+using ControlLibrary.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Management;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -23,9 +25,11 @@ namespace ControlUI
             SetTimer();
         }
 
+
+
         private async void computerList_DoubleClick(object sender, EventArgs e)
         {
-            if (sender is ListView item)
+            if (sender is ListView item && item.SelectedItems.Count > 0)
             {
                 ListViewItem selectedItem = item.SelectedItems[0];
                 await ChangeComputerStateAsync(selectedItem);
@@ -34,7 +38,7 @@ namespace ControlUI
 
         private async void computerList_KeyDown(object sender, KeyEventArgs e)
         {
-            if (sender is ListView item && e.KeyCode == Keys.Enter)
+            if (sender is ListView item && e.KeyCode == Keys.Enter && item.SelectedItems.Count > 0)
             {
                 ListViewItem selectedItem = item.SelectedItems[0];
                 await ChangeComputerStateAsync(selectedItem);
@@ -70,9 +74,13 @@ namespace ControlUI
 
             foreach (ComputerModel computer in computers)
             {
-                if (!computer.Shutdown())
+                try
                 {
-                    MessageBox.Show("Někde se vyskytla chyba. Nejspíše jsou špatně zadané přihlašovací údaje nebo host.");
+                    computer.Shutdown();
+                }
+                catch (ComputerServiceException ex)
+                {
+                    MessageBox.Show(ex.Message);
                 }
             }
 
@@ -127,7 +135,7 @@ namespace ControlUI
 
         private void WireUpImageList()
         {
-            string path = System.AppDomain.CurrentDomain.BaseDirectory;
+            string path = AppDomain.CurrentDomain.BaseDirectory;
             computerIcon.Images.Add(Image.FromFile($"{ path }\\res\\icon_offline.png"));
             computerIcon.Images.Add(Image.FromFile($"{ path }\\res\\icon_online.png"));
         }
@@ -172,9 +180,13 @@ namespace ControlUI
             if (await computers[index].IsRunning())
             {
                 selectedComputer.ImageIndex = 0;
-                if (!computers[index].Shutdown())
+                try
                 {
-                    MessageBox.Show("Někde se vyskytla chyba. Nejspíše jsou špatně zadané přihlašovací údaje nebo doména.");
+                    computers[index].Shutdown();
+                }
+                catch (ComputerServiceException ex)
+                {
+                    MessageBox.Show(ex.Message);
                 }
             }
             else
@@ -182,6 +194,7 @@ namespace ControlUI
                 selectedComputer.ImageIndex = 1;
                 computers[index].Start();
             }
+            await SetListViewComputerStateAsync(index);
         }
 
         private void DisableMainButtons(bool disable = true)
@@ -195,7 +208,7 @@ namespace ControlUI
         {
             Timer aTimer = new Timer
             {
-                Interval = 1000,
+                Interval = 10000,
                 Enabled = true
             };
             aTimer.Tick += (s, e) => Task.Run(() => UpdateListViewComputersAsync().Wait());

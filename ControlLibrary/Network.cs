@@ -15,10 +15,10 @@ namespace ControlLibrary
         /// Vyšle signál WakeOnLan.
         /// </summary>
         /// <param name="macAddress">MAC adresa zařízení.</param>
-        /// <param name="ip">IP adresa</param>
+        /// <param name="ip">Subnet mask</param>
         /// <param name="port">UDP port</param>
         /// <returns></returns>
-        public static async Task WakeOnLan(MacAddress macAddress, string ip = "255.255.255.255", int port = 7)
+        public static async Task WakeOnLan(MacAddress macAddress, string ip = "255.255.255.0", int port = 7)
         {
             byte[] magicPacket = BuildMagicPacket(macAddress);
 

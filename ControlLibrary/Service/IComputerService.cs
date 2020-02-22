@@ -6,7 +6,7 @@ namespace ControlLibrary.Service
     {
         Task Start();
 
-        bool Shutdown();
+        void Shutdown();
 
         Task<bool> IsRunning();
     }

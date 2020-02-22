@@ -71,9 +71,9 @@ namespace ControlLibrary
         /// </summary>
         /// <returns>Vrátí true v případě, že byl signál k vypnutí počítače úspěšně odeslán.
         ///     Vrátí false pokud odeslání signálu selhalo.</returns>
-        public bool Shutdown()
+        public void Shutdown()
         {
-            return ComputerService.Shutdown();
+            ComputerService.Shutdown();
         }
 
         /// <summary>
